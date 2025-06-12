@@ -8,7 +8,7 @@ from shapely.geometry import Point
 import re
 import shutil
 
-import src.om_funcs as om_funcs
+import orchestrate_funcs as om_funcs
 
 def get_git_root():
     try:

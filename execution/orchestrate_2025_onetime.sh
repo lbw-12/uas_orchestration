@@ -17,8 +17,9 @@ conda activate harvest
 
 python -u uas_orchestrate.py \
     --config_file /fs/ess/PAS2699/nitrogen/data/uas/2025/config/uas_config.yaml \
-    --steps "step11" \
-    --regen_shell_scripts
+    --steps "step1" \
+    --regen_shell_scripts \
+    --dry_run
 
 
     
