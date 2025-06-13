@@ -1281,13 +1281,23 @@ function toggleSidebar() {
     }
 
   function updateMapLayers() {
-    // orthomosaic URL & extent
+    // 0) immediately clear any old polygons
+    plotSource.clear();
+
+    // 1) build the new tile URL + extent
     const meta = foldersJsonRaw[selectedYear][selectedField][selectedDate];
-    const url  = baseUrl + tilePattern
-                  .replace("{year}",selectedYear)
-                  .replace("{field}",selectedField)
-                  .replace("{date}",selectedDate);
-    orthoLayer.getSource().setUrl(url);
+    const tileUrl = baseUrl + tilePattern
+      .replace("{year}", selectedYear)
+      .replace("{field}", selectedField)
+      .replace("{date}", selectedDate);
+
+    // —— REPLACE the tile source with a brand-new one ——
+    orthoLayer.setSource(new ol.source.XYZ({
+      url:     tileUrl,
+      minZoom: 15,
+      maxZoom: 24
+    }));
+
     if (meta.extent && selectedField !== lastField) {
       map.getView().fit(meta.extent, {
         padding: [20,20,20,20],
@@ -1295,25 +1305,15 @@ function toggleSidebar() {
       });
       lastField = selectedField;
     }
-    // plots
+
+    // 2) now (re)load your GeoJSON
     if (meta.geojson) {
       const fname = meta.geojson.split("/").pop();
-      const url  = baseUrl + selectedYear + "/" + selectedField + "/" + selectedDate + "/" + fname;
-
-      // 1) Set new URL and refresh
-      plotSource.setUrl(url);
+      plotSource.setUrl(`${baseUrl}${selectedYear}/${selectedField}/${selectedDate}/${fname}`);
       plotSource.refresh();
       plotLayer.setVisible(true);
-
-      // 2) “Once” the features finish loading, rebuild the legend
-      plotSource.once("featuresloadend", () => {
-        updateVizButtonsBasedOnData();
-        updateLegend();
-      });
     } else {
-      plotSource.clear();
       plotLayer.setVisible(false);
-      // hide legend if no geojson
       qs("#legend").style.display = "none";
     }
   }
