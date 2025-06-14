@@ -103,7 +103,7 @@ processing_step="maptile"
 
 echo "finding area of orthomosaic in square meters"
 
-area_m2=$(python -u get_om_area.py --ortho "$OM_DIR/$OM_FILENAME" --unit "m2")
+area_m2=$(python -u ../utils/get_om_area.py --ortho "$OM_DIR/$OM_FILENAME" --unit "m2")
 
 log_dir={{logdir_perf}}
 log_file="$log_dir/execution_times_maptile.csv"
@@ -121,7 +121,7 @@ fi
 maptiles_base_dir=$(dirname "{{maptiles_dir}}")
 
 # execute folders_to_json.py
-python -u folders_to_json.py --scan_dir "$maptiles_base_dir"
+python -u ../utils/folders_to_json.py --scan_dir "$maptiles_base_dir"
 
 # Append the data
 echo "$SLURM_JOB_ID,$job_name,$processing_step,$num_cores,$SLURM_MEM_PER_NODE,$start_time,$end_time,$execution_time,$area_m2,$output_size" >> "$log_file"

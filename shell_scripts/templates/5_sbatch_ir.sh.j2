@@ -45,8 +45,8 @@ execution_time=$((end_time - start_time))
 
 processing_step="ir"
 
-image_count_geo=$(python -u get_imagecount.py "$OUTPUT_PATH_GEO")
-image_count_ir=$(python -u get_imagecount.py "$OUTPUT_PATH_IR")
+image_count_geo=$(python -u ../utils/get_imagecount.py "$OUTPUT_PATH_GEO")
+image_count_ir=$(python -u ../utils/get_imagecount.py "$OUTPUT_PATH_IR")
 
 # Get the size of the output folder
 output_size=$(du -sh "$OUTPUT_PATH_IR" | awk '{print $1}')

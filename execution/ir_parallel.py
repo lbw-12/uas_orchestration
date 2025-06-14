@@ -45,7 +45,9 @@ def main():
     processed_count = 0
     error_count = 0
 
-    with ProcessPoolExecutor(max_workers=args.num_workers) as executor:
+    print(f"Using {min(args.num_workers, 20)} workers")
+
+    with ProcessPoolExecutor(max_workers=min(args.num_workers, 20)) as executor:
         results = executor.map(process_single_file, arg_tuples)
         for file_name, success, tb in results:
             if success:

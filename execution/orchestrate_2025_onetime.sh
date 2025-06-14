@@ -15,11 +15,11 @@ source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
 conda activate harvest
 
 
-python -u uas_orchestrate.py \
+python -u orchestrate.py \
     --config_file /fs/ess/PAS2699/nitrogen/data/uas/2025/config/uas_config.yaml \
-    --steps "step1" \
     --regen_shell_scripts \
-    --dry_run
+    --dry_run \
+    --steps "step6" "step7" "step8" "step9" "step10" "step11"
 
 
     

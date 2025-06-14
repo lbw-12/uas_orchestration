@@ -51,7 +51,7 @@ conda activate harvest
 
 echo "finding area of orthomosaic in square meters"
 
-area_m2=$(python -u get_om_area.py --ortho "$om_dir/$om_filename" --unit "m2")
+area_m2=$(python -u ../utils/get_om_area.py --ortho "$om_dir/$om_filename" --unit "m2")
 
 output_size=$(du -sh "$om_dir/$om_filename" | awk '{print $1}')
 

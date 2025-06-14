@@ -40,8 +40,8 @@ processing_step="plottile"
 
 echo "finding combined area of plot polygons"
 
-plot_area_corn_m2=$(python -u get_plot_area.py "{{ shapefile_path_corn }}")
-plot_area_soy_m2=$(python -u get_plot_area.py "{{ shapefile_path_soy }}")
+plot_area_corn_m2=$(python -u ../utils/get_plot_area.py "{{ shapefile_path_corn }}")
+plot_area_soy_m2=$(python -u ../utils/get_plot_area.py "{{ shapefile_path_soy }}")
 plot_area_total_m2=$(echo "$plot_area_corn_m2 + $plot_area_soy_m2" | bc)
 
 log_dir={{logdir_perf}}

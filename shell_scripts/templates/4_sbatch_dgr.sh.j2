@@ -13,7 +13,7 @@
 source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
 conda activate harvest
 
-FLIGHT_DIR="{{ flight_dir }}"
+FLIGHT_DIR="{{ img_dir }}"
 OUTPUT_PATH_GEO="{{ output_path_geo }}"
 
 job_name="{{ job_title }}"
@@ -47,7 +47,7 @@ processing_step="dgr"
 
 echo "finding number of DGR images that have been processed."
 
-image_count=$(python -u get_imagecount.py "$OUTPUT_PATH_GEO")
+image_count=$(python -u ../utils/get_imagecount.py "$OUTPUT_PATH_GEO")
 
 log_dir={{logdir_perf}}
 log_file="$log_dir/execution_times_dgr.csv"

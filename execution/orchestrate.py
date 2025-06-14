@@ -77,12 +77,13 @@ def step3_find(base_folder, config, om_list):
         plottiles_dir = os.path.join(plottiles_base_dir, f'plot_tiles_{om_sensor_type}_om')
 
         plottiles_files = []
-        for file in sorted(os.listdir(plottiles_dir)):
-            if file.endswith('.tif'):
-                if om_sensor_type in file and om_location in file and om_date in file:
-                    plottiles_files.append(file)
-        if len(plottiles_files) < 50:
-            step3_jobs.append(om)
+        if os.path.exists(plottiles_dir):
+            for file in sorted(os.listdir(plottiles_dir)):
+                if file.endswith('.tif'):
+                    if om_sensor_type in file and om_location in file and om_date in file:
+                        plottiles_files.append(file)
+            if len(plottiles_files) < 50:
+                step3_jobs.append(om)
 
     for job in step3_jobs:
         print(f'step3_job: {job}')
@@ -152,11 +153,12 @@ def generate_shell_script(flight_dict, config, uas_pipeline):
     script_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Set up Jinja2 to look for templates in the same directory
-    env = Environment(loader=FileSystemLoader(script_dir))
+    env = Environment(loader=FileSystemLoader(git_root))
 
     # Only generate scripts for the steps in our filtered pipeline
     for step in uas_pipeline:
         count = 0
+        print(f'path to template: {uas_pipeline[step]["shell_script_template"]}')
         template = env.get_template(uas_pipeline[step]['shell_script_template'])
         log_folder = os.path.join(processing_dir, uas_pipeline[step]['log_folder'])
         os.makedirs(log_folder, exist_ok = True)
@@ -421,8 +423,8 @@ if __name__ == '__main__':
     dry_run = args.dry_run
     regen_shell_scripts = args.regen_shell_scripts
     # If regenerating shell scripts, we need to run in dry_run mode to not overwrite existing data outputs.
-    #if regen_shell_scripts:
-    #    dry_run = True
+    if regen_shell_scripts:
+        dry_run = True
 
     om_list = []
     for location in flight_config_dict.keys():

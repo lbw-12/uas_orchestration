@@ -14,6 +14,8 @@ import time
 import sys
 import shutil
 import pyproj
+from pathlib import Path
+import glob
 
 
 
@@ -495,9 +497,9 @@ def collect_info_specific_path(filepath, output_folder):
     northwest_elevation_map_path = location_of_elevation_tiles + "northwest/"
     f7_elevation_map_path = location_of_elevation_tiles + "f7/"
     kuntz_elevation_map_path = location_of_elevation_tiles + "kuntz/"
-    flight = filepath.split("/")[-1]
-    print(flight)
-    print(filepath)
+    flight = filepath.split("/")[-3]
+    print(f'flight: {flight}')
+    print(f'filepath: {filepath}')
     elevation_map_path = ""
     
     if "western" in flight.lower():
@@ -535,18 +537,29 @@ def collect_info_specific_path(filepath, output_folder):
         print(f'sensor: {filepath.lower()} not found')
         return
 
-    if not os.path.isfile(filepath + "/01_Images/" + flight + "/OUTPUT/" + flight + " report.pdf"):
+    """if not os.path.isfile(filepath + "/01_Images/" + flight + "/OUTPUT/" + flight + " report.pdf"):
         print(f'report.pdf not found for {filepath}')
-        return
+        return"""
 
-    INPUT_DIR = filepath + "/01_Images/" + flight + "/OUTPUT/"
+    #INPUT_DIR = filepath + "/01_Images/" + flight + "/OUTPUT/"
+    INPUT_DIR = filepath
     if not os.path.isdir(INPUT_DIR):
         print(f'INPUT_DIR: {INPUT_DIR} is not a directory')
         return
 
     #OUTPUT_PATH_GEO = filepath + "/01_Images/" + flight + "/DGR/"
     OUTPUT_PATH_GEO = output_folder
-    CSV_FILE = INPUT_DIR + INPUT_DIR.split("/")[-3] + " geotags.csv"
+
+    # Go up a level to get the geotags.csv file
+    CSV_DIR = Path(INPUT_DIR).parent / 'OUTPUT'
+    print(f'csv dir: {CSV_DIR}')
+    # Find the first *geotags.csv file in the directory
+    csv_files = list(CSV_DIR.glob('*geotags.csv'))
+    if not csv_files:
+        print("No geotags.csv file found")
+        return
+    CSV_FILE = csv_files[0]
+    print(f'csv file: {CSV_FILE}')
 
     print(CSV_FILE, INPUT_DIR, OUTPUT_PATH_GEO,MODE, elevation_map_path)
 

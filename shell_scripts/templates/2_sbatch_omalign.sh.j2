@@ -44,7 +44,7 @@ processing_step="omalign"
 
 echo "finding number of alignment points"
 
-alignment_points=$(python -u get_alignment_points.py "${SHAPEFILE_PATH}/{{ om }}_pts/{{ om }}_pts.shp")
+alignment_points=$(python -u ../utils/get_alignment_points.py "${SHAPEFILE_PATH}/{{ om }}_pts/{{ om }}_pts.shp")
 
 log_dir={{logdir_perf}}
 log_file="$log_dir/execution_times_omalign.csv"
