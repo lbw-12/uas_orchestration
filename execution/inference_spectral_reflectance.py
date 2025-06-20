@@ -12,6 +12,7 @@ import pdb
 import json
 import argparse
 import joblib
+from collections import defaultdict
 
 def analyze_image_statistics(image, mask, ndvi, image_name, stats_list):
     veg_pixels = image[mask == 1]
@@ -30,9 +31,56 @@ def analyze_image_statistics(image, mask, ndvi, image_name, stats_list):
         "vegetation_cover": vegetation_cover
     })
 
-def save_metrics_to_json(stats_list, out_path="vegetation_metrics.json"):
-    with open(out_path, "w") as f:
-        json.dump(stats_list, f, indent=2)
+def save_metrics_to_json(results, output_json_path, field, plotimage_source, date):
+
+    # 1. Group predictions by crop type first.
+    # We use a defaultdict to easily create new crop lists as we find them.
+    predictions_by_crop = defaultdict(dict)
+    print("Validating plot numbers and grouping by crop...")
+
+    for image_name, pred in results.items():
+       # --- A. Extract Crop Name ---
+        crop_name = None
+        if '_corn_' in image_name:
+            crop_name = 'corn'
+        elif '_soy_' in image_name:
+            crop_name = 'soy'
+
+        # --- B. Extract and Validate Plot Number ---
+        plot_str = image_name.split('_')[-2]
+
+        # --- C. Add to the correct group if valid ---
+        if crop_name and plot_str.isdigit() and len(plot_str) == 3:
+            # Add the plot and its prediction to the correct crop's dictionary
+            predictions_by_crop[crop_name][plot_str] = round(float(pred), 4)
+        else:
+            # If crop or plot format is invalid, print a warning.
+            print(f"  [!] Warning: Skipping invalid format in filename '{image_name}'.")
+
+     # 2. Sort the plots within each crop group and build the final structure.
+    final_results = {field: {}} # Start with the top-level field key
+
+    for crop, plots_dict in predictions_by_crop.items():
+        print(f"Sorting {len(plots_dict)} plots for crop: '{crop}'")
+
+        # Sort the plots for the current crop numerically
+        sorted_plots = sorted(plots_dict.items(), key=lambda item: int(item[0]))
+        ordered_plots_dict = dict(sorted_plots)
+
+        # Build the nested structure for this specific crop
+        final_results[field][crop] = {
+            plotimage_source: {
+                date: ordered_plots_dict
+            }
+        }
+
+    print(f"Structured results for {len(predictions_by_crop)} crop(s).")
+
+    # Save the final structured dictionary to JSON
+    os.makedirs(os.path.dirname(output_json_path), exist_ok=True)
+    with open(output_json_path, 'w') as f:
+        json.dump(final_results, f, indent=4)
+        print(f"Combined results for NDVI: {len(final_results)} entries")
 
 def save_side_by_side_overlay(image, mask, out_path, alpha=0.4):
     rgb = image[..., [2, 1, 0]]
@@ -141,7 +189,7 @@ def save_mask_as_png(mask, image, out_path, alpha=0.4):
     blended = cv2.addWeighted(rgb, 1 - alpha, overlay, alpha, 0)
     cv2.imwrite(out_path, cv2.cvtColor(blended, cv2.COLOR_RGB2BGR))
 
-def predict_and_save(files, output_dir, clf, visualize=False, output_json = "inference_spectral_reflectance.json"):
+def predict_and_save(files, output_dir, clf, field, plotimage_source, date, visualize=False, output_json = "inference_spectral_reflectance.json"):
 
     
     stats_list = []
@@ -173,7 +221,7 @@ def predict_and_save(files, output_dir, clf, visualize=False, output_json = "inf
             save_side_by_side_overlay(image, pred_mask, sidebyside_png_path)
             save_stacked_overlay_with_stats(image, pred_mask, ndvi, stats, sidebyside_png_path)
           
-    save_metrics_to_json(mean_ndvi, output_json)
+    save_metrics_to_json(mean_ndvi, output_json, field, plotimage_source, date)
 
 def get_ndvi_json(image_dir, ndvi_json_path):
     """
@@ -203,6 +251,10 @@ def main():
     parser.add_argument("--output_json", type=str, default="inference_spectral_reflectance.json", help="Path to save the output JSON file")
     parser.add_argument("--model_path", type=str, default=None, help="Path to the pre-trained model (if any)")
     parser.add_argument("--visualize", type=bool, default=False, help="Whether to visualize results with overlays and side-by-side images")
+    parser.add_argument('--field', type=str, default=None, help='Field ID')
+    parser.add_argument('--plotimage_source', type=str, default=None, help='Plot image source')
+    parser.add_argument('--date', type=str, default=None, help='Date')
+
     args = parser.parse_args()
 
     all_files = sorted(glob(os.path.join(args.input_dir, "*.tif")))
@@ -219,7 +271,11 @@ def main():
             year = y
             break
 
-    predict_and_save(all_files, args.output_dir, clf, visualize=args.visualize, output_json=args.output_json)
+    field = args.field
+    plotimage_source = args.plotimage_source
+    date = args.date
+
+    predict_and_save(all_files, args.output_dir, clf, field, plotimage_source, date, visualize=args.visualize, output_json=args.output_json)
    
 if __name__ == "__main__":
     main()

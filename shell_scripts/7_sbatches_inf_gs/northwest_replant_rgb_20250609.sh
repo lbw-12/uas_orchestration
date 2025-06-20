@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J "gs_rgb"
+#SBATCH -J "gs_northwest_replant_rgb_20250609"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_gs/%j.txt
-#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_gs/%j.err
+#SBATCH --output=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_gs/%j-northwest_replant_rgb_20250609-inf_gs.txt
+#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_gs/%j-northwest_replant_rgb_20250609-inf_gs.err
 #SBATCH --time=00:20:00
 #SBATCH --mem=300G
 #SBATCH --gpus-per-node=1
@@ -29,8 +29,12 @@ start_time=$(date +%s)
 
 python "inference_growth_stage.py" \
     --input_dir "/fs/ess/PAS2699/nitrogen/data/uas/2025/plot_patches/northwest_replant_om_rgb_20250609/" \
-    --output_dir "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/inference_northwest_replant_rgb_20250609_gs.json" \
-    --model_path "/fs/ess/PAS2699/nitrogen/models/growth_stage/gs_vit_model.pth" 
+    --output_dir "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/inf_gs_northwest_replant_om_20250609.json" \
+    --model_path "/fs/ess/PAS2699/nitrogen/models/growth_stage/gs_vit_model.pth" \
+    --field "northwest_replant" \
+    --plotimage_source "om" \
+    --date "20250609"
+
 
 
 end_time=$(date +%s)
@@ -42,7 +46,7 @@ log_dir=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_perf
 log_file="$log_dir/execution_times_growth_stage_inference.csv"
 
 # Get the size of the output folder
-output_size=$(du -sh "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/inference_northwest_replant_rgb_20250609_gs.json" | awk '{print $1}')
+output_size=$(du -sh "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/inf_gs_northwest_replant_om_20250609.json" | awk '{print $1}')
 
 # Check if the log file exists
 if [ ! -f "$log_file" ]; then

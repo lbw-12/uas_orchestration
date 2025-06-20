@@ -32,10 +32,10 @@ echo "Images copied to code directory"
 echo "Starting ODM"
 time apptainer run \
     --writable-tmpfs "$odm_image_path" \
-    --mesh-octree-depth 10 --dtm --force-gps --use-exif --debug\
+    --mesh-octree-depth 9 --dtm --force-gps --use-exif --debug\
     --smrf-threshold 0.5 --smrf-window 18 --dsm --pc-csv --pc-las --orthophoto-kmz \
-    --matcher-type flann --feature-quality ultra --max-concurrency "$num_cores" \
-    --build-overviews --min-num-features 10000 --skip-3dmodel --dem-gapfill-steps 0 \
+    --matcher-type flann --feature-quality high --max-concurrency 8 \
+    --build-overviews --min-num-features 8000 --skip-3dmodel --dem-gapfill-steps 0 \
     --orthophoto-resolution 3.0 --ignore-gsd --mesh-size 50000 --dem-resolution 1.5 --radiometric-calibration camera+sun \
     --project-path "$out_dir"
 

@@ -8,10 +8,10 @@ import traceback
 from dgr import georeferencing, get_crs_zone, get_location, collect_info_specific_path
 
 def process_single_file(args):
-    file_name, df_path, location, crs, input_dir, output_dir, sensor, elevation_map_path = args
+    file_name, df, location, crs, input_dir, output_dir, sensor, elevation_map_path = args
     try:
         # Read the CSV file and get the row for this file
-        df = pd.read_csv(df_path)
+        #df = pd.read_csv(df_path)
         # georeferencing expects the DataFrame, but we only need the row for this file
         georeferencing(
             file_name,
@@ -29,13 +29,16 @@ def process_single_file(args):
         return (file_name, False, traceback.format_exc())
 
 def process_files_parallel(input_folder, output_folder, num_workers=1):
+    print(f'input_folder: {input_folder}')
+    print(f'output_folder: {output_folder}')
+    print(f'num_workers: {num_workers}')
     args_to_pass = collect_info_specific_path(input_folder, output_folder)
     if not args_to_pass:
         print("Failed to collect necessary information")
         return
 
-    csv_file, input_dir, output_dir, sensor, elevation_map_path = args_to_pass
-    df = pd.read_csv(csv_file)
+    df_csv, input_dir, output_dir, sensor, elevation_map_path = args_to_pass
+    df = df_csv
     crs = get_crs_zone(df)
     location = get_location(input_dir)
 
@@ -59,7 +62,7 @@ def process_files_parallel(input_folder, output_folder, num_workers=1):
 
     # Prepare argument tuples for each file
     arg_tuples = [
-        (file_name, csv_file, location, crs, input_dir, output_dir, sensor, elevation_map_path)
+        (file_name, df, location, crs, input_dir, output_dir, sensor, elevation_map_path)
         for file_name in jpg_files
     ]
 

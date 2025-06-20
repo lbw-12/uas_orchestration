@@ -3,11 +3,12 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output={{ log_dir }}/%j.txt
-#SBATCH --error={{ log_dir }}/%j.err
+#SBATCH --output={{ log_dir }}/%j-{{job_title}}-plottiles.txt"
+#SBATCH --error={{ log_dir }}/%j-{{job_title}}-plottiles.err
 #SBATCH --time=0:20:00
 #SBATCH --mem=4G
 #SBATCH -A PAS2699
+
 
 source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
 conda activate harvest

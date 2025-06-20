@@ -19,12 +19,14 @@ from tqdm import tqdm
 import json
 import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parents[2]))
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 from models.growth_stage_prediction.growth_stage_prediction_model import GrowthStagePredictionModel
 from models.growth_stage_prediction.trainer import Trainer
 from models.growth_stage_prediction.utils import set_seed, check_data_leakage
 import argparse
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from collections import defaultdict
+
 loc_list = ['northwest', 'wooster', 'western']
 crop_list = ['corn', 'soy']
 year_list = ['2023', '2024', '2025']
@@ -56,7 +58,7 @@ class GrowthStageDataset(Dataset):
 
 
 
-def run(input_images, model_path, config, output_json):
+def run(input_images, model_path, config, output_json, field, plot_image_source, date):
 
 
     model = GrowthStagePredictionModel(config['model']['name'], config['model']['num_classes'])
@@ -76,18 +78,101 @@ def run(input_images, model_path, config, output_json):
     print(f"Test model: {model_path}")
     results = trainer.inference(model_path)
 
-    results_dict = {
-        path: int(pred)
-        for path, pred in zip(results["image_names"], results["rounded_preds"])
-    }
+    gs_dict = {}
 
-    print(f"Combined results: {len(results_dict)} entries")
-    #save as json 
-    
+    gs_dict['corn'] = {
+    'VE':  0, 'V1': 1, 'V2': 2, 'V3': 3, 'V4': 4, 'V5': 5, 'V6': 6, 'V7': 7, 'V8': 8, 'V9': 9,
+    'V10': 10, 'V11': 10, 'V12': 10,
+    'V13': 11, 'V14': 11, 'V15': 11, 'V16': 11, 'V17': 11, 'V18': 11, 'VT': 11,
+    'R1': 12, 'R2': 13, 'R3': 14, 'R4': 15, 'R5': 16, 'R6': 17}
+
+    gs_dict['soy'] = {
+    'VE':  0, 'VC': 0, 'V1': 1, 'V2': 2, 'V3': 3, 'V4': 4, 'V5': 5, 'V6': 6, 'V7': 7, 'V8': 8, 'V9': 9,
+    'V10': 10, 'V11': 10, 'V12': 10,
+    'V13': 11, 'V14': 11, 'V15': 11, 'V16': 11, 'V17': 11, 'V18': 11, 'VT': 11,
+    'R1': 12, 'R2': 13, 'R3': 14, 'R4': 15, 'R5': 16, 'R6': 17, 'R7': 18, 'R8': 19}
+
+
+    stage_name_maps = {} # This will hold a map for 'corn' and a map for 'soy'
+
+    # Loop through the top-level gs_dict ('corn' and 'soy')
+    for crop, crop_gs_dict in gs_dict.items():
+        # Reverse the specific dictionary for the current crop
+        reversed_gs_dict = defaultdict(list)
+        for stage, num_val in crop_gs_dict.items():
+            reversed_gs_dict[num_val].append(stage)
+
+        # Create the clean map for the current crop
+        current_crop_map = {}
+        for num_val, stages in reversed_gs_dict.items():
+            if len(stages) == 1:
+                current_crop_map[num_val] = stages[0]
+            else:
+                current_crop_map[num_val] = f"{stages[0]}-{stages[-1]}"
+        
+        # Add the newly created map to our dictionary of maps
+        stage_name_maps[crop] = current_crop_map
+
+
+    predictions_by_crop = defaultdict(dict)
+    print("Validating plot numbers and grouping by crop...")
+
+    for image_name, pred in zip(results["image_names"], results["rounded_preds"]):
+        # --- A. Extract Crop Name ---
+        crop_name = None
+        if '_corn_' in image_name:
+            crop_name = 'corn'
+        elif '_soy_' in image_name:
+            crop_name = 'soy'
+
+        # --- B. Extract and Validate Plot Number ---
+        plot_str = image_name.split('_')[-2]
+
+        # --- C. Add to the correct group if valid ---
+        if crop_name and plot_str.isdigit() and len(plot_str) == 3:
+            # Add the plot and its prediction to the correct crop's dictionary
+            predictions_by_crop[crop_name][plot_str] = pred
+        else:
+            # If crop or plot format is invalid, print a warning.
+            print(f"  [!] Warning: Skipping invalid format in filename '{image_name}'.")
+
+    # 2. Sort the plots within each crop group and build the final structure.
+    final_results = {field: {}} # Start with the top-level field key
+
+    for crop, plots_dict in predictions_by_crop.items():
+        print(f"Sorting {len(plots_dict)} plots for crop: '{crop}'")
+
+        # Sort the plots for the current crop numerically
+        sorted_plots = sorted(plots_dict.items(), key=lambda item: int(item[0]))
+        ordered_plots_dict = dict(sorted_plots)
+
+        # --- NEW: Part 2 - Create the final plot dictionary with stage info ---
+        current_stage_map = stage_name_maps.get(crop, {})
+        plots_with_stage_info = {}
+        for plot_num, numeric_pred in ordered_plots_dict.items():
+        # Look up the stage name string from our map. Default to 'Unknown'.
+            stage_name = current_stage_map.get(numeric_pred, "Unknown")
+        
+            # Create the final object for this plot
+            plots_with_stage_info[plot_num] = {
+                "numeric": numeric_pred,
+                "stage": stage_name
+            }
+
+        # Build the nested structure for this specific crop
+        final_results[field][crop] = {
+            plot_image_source: {
+                date: plots_with_stage_info
+            }
+        }
+
+    print(f"Structured results for {len(predictions_by_crop)} crop(s).")
+
+    # Save the final structured dictionary to JSON
     os.makedirs(os.path.dirname(output_json), exist_ok=True)
     with open(output_json, 'w') as f:
-        json.dump(results_dict, f, indent=4)
-
+        json.dump(final_results, f, indent=4)
+    print(f"Combined results saved to: {output_json}")
 
 def main():
     #get args
@@ -97,6 +182,10 @@ def main():
     parser.add_argument('--output_dir', type=str, default='results/growth_stage_predictions.json', help='Path to save the results')
     parser.add_argument('--model_path', type=str, default='models/growth_stage_model.pth', help='Path to the trained model')
     parser.add_argument('--config', type=str, default='growth_stage_configs/config.yaml', help='Path to the config file')
+    parser.add_argument('--field', type=str, default=None, help='Field ID')
+    parser.add_argument('--plotimage_source', type=str, default=None, help='Plot image source')
+    parser.add_argument('--date', type=str, default=None, help='Date')
+    
     args = parser.parse_args()
 
     year_list = ['2023', '2024', '2025']
@@ -109,8 +198,12 @@ def main():
             break
     config = load_config(args.config)
 
+    field = args.field
+    plot_image_source = args.plotimage_source
+    date = args.date
+
     #run(input_images=args.input_dir, output_path=args.output_dir, model_path=args.model_path, config=config, output_json=args.output_dir + '/inference_growth_stage_' + year + '.json')
-    run(input_images=args.input_dir, model_path=args.model_path, config=config, output_json=args.output_dir)
+    run(input_images=args.input_dir, model_path=args.model_path, config=config, output_json=args.output_dir, field=field, plot_image_source=plot_image_source, date=date)
 
 if __name__ == "__main__":
     main()

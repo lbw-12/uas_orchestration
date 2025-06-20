@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J "generating_geojson"
+#SBATCH -J "generating_geojson_{{job_title}}"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output={{ log_dir }}/%j.txt
-#SBATCH --error={{ log_dir }}/%j.err
+#SBATCH --output={{ log_dir }}/%j-{{job_title}}-process_geojson.txt
+#SBATCH --error={{ log_dir }}/%j-{{job_title}}-process_geojson.err
 #SBATCH --time=05:00:00
 #SBATCH --mem=100G
 #SBATCH -A PAS2699

@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import joblib
 from colorspacious import cspace_convert
 import argparse
+from collections import defaultdict
 
 def load_model(model_path):
     return joblib.load(model_path)
@@ -38,7 +39,7 @@ def calculate_green_percentage(classification):
     valid_pixels = np.sum(np.logical_or(classification == 'green', classification == 'brown'))
     return (green_pixels / (valid_pixels + 1e-6))
 
-def process_folder(input_dir, model_path, output_json_path, file_ext=".tif"):
+def process_folder(input_dir, model_path, output_json_path, field, plotimage_source, date, file_ext=".tif"):
     kmeans = load_model(model_path)
     results = {}
 
@@ -54,9 +55,54 @@ def process_folder(input_dir, model_path, output_json_path, file_ext=".tif"):
                 print(f"Error processing {fname}: {e}")
                 results[fname] = None
 
-    with open(output_json_path, "w") as f:
-        json.dump(results, f, indent=2)
-    print(f"\nSaved canopy coverage results to: {output_json_path}")
+    # 1. Group predictions by crop type first.
+    # We use a defaultdict to easily create new crop lists as we find them.
+    predictions_by_crop = defaultdict(dict)
+    print("Validating plot numbers and grouping by crop...")
+
+    for image_name, pred in results.items():
+       # --- A. Extract Crop Name ---
+        crop_name = None
+        if '_corn_' in image_name:
+            crop_name = 'corn'
+        elif '_soy_' in image_name:
+            crop_name = 'soy'
+
+        # --- B. Extract and Validate Plot Number ---
+        plot_str = image_name.split('_')[-2]
+
+        # --- C. Add to the correct group if valid ---
+        if crop_name and plot_str.isdigit() and len(plot_str) == 3:
+            # Add the plot and its prediction to the correct crop's dictionary
+            predictions_by_crop[crop_name][plot_str] = round(float(pred), 4)
+        else:
+            # If crop or plot format is invalid, print a warning.
+            print(f"  [!] Warning: Skipping invalid format in filename '{image_name}'.")
+
+     # 2. Sort the plots within each crop group and build the final structure.
+    final_results = {field: {}} # Start with the top-level field key
+
+    for crop, plots_dict in predictions_by_crop.items():
+        print(f"Sorting {len(plots_dict)} plots for crop: '{crop}'")
+
+        # Sort the plots for the current crop numerically
+        sorted_plots = sorted(plots_dict.items(), key=lambda item: int(item[0]))
+        ordered_plots_dict = dict(sorted_plots)
+
+        # Build the nested structure for this specific crop
+        final_results[field][crop] = {
+            plotimage_source: {
+                date: ordered_plots_dict
+            }
+        }
+
+    print(f"Structured results for {len(predictions_by_crop)} crop(s).")
+
+    # Save the final structured dictionary to JSON
+    os.makedirs(os.path.dirname(output_json_path), exist_ok=True)
+    with open(output_json_path, 'w') as f:
+        json.dump(final_results, f, indent=4)
+        print(f"Combined results for canopy coverage: {len(final_results)} entries")
 
 if __name__ == "__main__":
     #get agrs
@@ -64,6 +110,10 @@ if __name__ == "__main__":
     parser.add_argument("--input_dir", type=str, required=True, help="Directory containing input images.")
     parser.add_argument("--output_json", type=str, required=True, help="Path to save the output JSON file.")
     parser.add_argument("--model_path", type=str, required=True, help="Path to the trained MiniBatchKMeans model.")
+    parser.add_argument('--field', type=str, default=None, help='Field ID')
+    parser.add_argument('--plotimage_source', type=str, default=None, help='Plot image source')
+    parser.add_argument('--date', type=str, default=None, help='Date')
+ 
     
     args = parser.parse_args()
     year_list = ['2023', '2024', '2025']
@@ -74,4 +124,9 @@ if __name__ == "__main__":
         if y in input_dir:
             year = y
             break
-    process_folder(args.input_dir, args.model_path, args.output_json)
+
+    field = args.field
+    plotimage_source = args.plotimage_source
+    date = args.date
+
+    process_folder(args.input_dir, args.model_path, args.output_json, field, plotimage_source, date)

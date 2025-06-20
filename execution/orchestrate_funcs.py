@@ -10,6 +10,8 @@ import json
 import re
 import glob
 import yaml
+import sys
+import time
 
 
 # Load configuration file
@@ -183,15 +185,17 @@ def make_dict(valid_folders, flight_config_dict, sensor_dict, om_folder, regen_s
                                 if sensor_type not in flight_dict[flight][om]:
                                     flight_dict[flight][om][sensor_type] = {}
                                 if date not in flight_dict[flight][om][sensor_type]:
+                                    flight_dict[flight][om][sensor_type][date] = {}
                                     folder_match = True
                                     tif_file = os.path.join(om_folder, f'{om}_{sensor_type}_{date}.tif')
                                     if (date_range and date >= date_range[0] and date <= date_range[1]) or not date_range:  # If date_range is not provided, process all dates
                                         if not os.path.exists(tif_file) or regen_shell_scripts:
-                                            print(f'DOES NOT EXIST: {om}_{sensor_type}_{date}.tif')
+                                            #print(f'DOES NOT EXIST: {om}_{sensor_type}_{date}.tif')
                                             om_remaining.append(f'{om}_{sensor_type}_{date}.tif')
                                             folders_remaining.append(folder)
                                             count += 1
-                                            flight_dict[flight][om][sensor_type][date] = folder
+                                            flight_dict[flight][om][sensor_type][date]['status'] = 'validated'
+                                            flight_dict[flight][om][sensor_type][date]['input_path'] = folder
                                         #else:
                                         #    print(f'Orthomosaic for {location}_{sensor_type}_{date} already exists')
                                         # Update dictionary to include each step for a given date to note if it is complete or not. 
@@ -209,6 +213,754 @@ def make_dict(valid_folders, flight_config_dict, sensor_dict, om_folder, regen_s
 
     print(f'number of geotagged folders remaining to generate orthomosaic: {count}')
     return flight_dict, count, folders_not_matched, folders_multiple, om_remaining, folders_remaining
+
+def om_validation(step, flight_dict, config):
+    # Check if the orthomosaic exists in the om_folder
+    # If it does, check if the orthomosaic is complete
+    # If it is not complete, add it to the om_remaining list
+    # If it is complete, add it to the flight_dict
+    # If it does not exist, add it to the om_remaining list
+    # Return the flight_dict, om_remaining, and folders_remaining
+
+    # Get the om_folder from the config
+    output_dir = os.path.join(config['base_folder'], config['uas_pipeline'][step]['output_folder'])
+    output_file_template = config['uas_pipeline'][step]['output_file']
+
+    # Get the flight_config_dict from the config
+    flight_config_dict = config['flight_list']
+    # Get the sensor_dict from the config
+    sensor_dict = config['sensor_dict']
+    # Get the date_range from the config
+
+    folders_not_matched = []
+    folders_multiple = []
+    om_remaining = []
+    folders_remaining = []
+    count = 0
+
+    flights_folder = os.path.join(config['base_folder'], 'flights')
+    folders = list_folders_two_levels_deep(flights_folder)
+
+    valid_folders, invalid_folders = geotagged_folders(folders)
+
+    print(f'number of valid folders: {len(valid_folders)}')
+    print(f'number of invalid folders: {len(invalid_folders)}')
+
+    for folder in sorted(invalid_folders):
+        folder_only = folder.split('/')[-2]
+        print(f'invalid folder: {folder_only}')
+
+    # Iterate through the valid folders and add to the flight_dict
+    for folder in sorted(valid_folders):
+        folder_match = False
+        folder_parts = folder.strip('/').split('/')
+
+        # Iterate through the flight_config_dict and add to the flight_dict
+        for flight, value in flight_config_dict.items():
+            for om in value.keys():
+                # Find the farm and field
+                farm_field = flight.split('_')
+                farm = farm_field[0]
+                if len(farm_field) == 2:
+                    field = farm_field[1]
+                    if field == 'n':
+                        field = '_n_'
+                else:
+                    field  = None
+                    #Find the field
+                if farm in folder_parts[8].lower():
+                    if field is None or field in folder_parts[9].lower(): 
+                        date = folder_parts[8][:8]
+
+                        for sensor_type, sensor_name in sensor_dict.items():
+                            if sensor_name in folder_parts[9].lower():
+                                if sensor_type not in flight_dict[flight][om]:
+                                    flight_dict[flight][om][sensor_type] = {}
+                                if date not in flight_dict[flight][om][sensor_type]:
+                                    flight_dict[flight][om][sensor_type][date] = {}
+                                    folder_match = True
+                                    output_filename = output_file_template.format(om=om, sensor_type=sensor_type, date=date)
+                                    output_file = os.path.join(output_dir, output_filename)
+                                    #print(f'output_file: {output_file}')
+                                    if not os.path.exists(output_file):
+                                        if step not in flight_dict[flight][om][sensor_type][date]:
+                                            flight_dict[flight][om][sensor_type][date][step] = {}
+                                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                                        #print(f'DOES NOT EXIST: {output_filename}')
+                                        om_remaining.append(output_filename)
+                                        folders_remaining.append(folder)
+                                        count += 1
+                                    else:
+                                        if step not in flight_dict[flight][om][sensor_type][date]:
+                                            flight_dict[flight][om][sensor_type][date][step] = {}
+                                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+
+                                    # Add the input path to the flight_dict
+                                    if flight_config_dict[flight][om]:
+                                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = f'{folder}OUTPUT_{om}/'
+                                    else:
+                                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = f'{folder}OUTPUT/'
+                                else:
+                                    print(f'This folder is a multiple, needs to be consolidated: {folder}')
+                                    print(f'flight: {flight}, om: {om}, sensor_type: {sensor_type}, date: {date}')
+                                    folders_multiple.append(folder)
+                                    confirm = input("Do you want to consolidate this folder? (y/n): ").lower()
+                                    # Check if the user confirmed
+                                    if confirm == 'y':
+                                        print("--> Consolidating images...")
+                                        folders_multiple.append(folder)
+                                        consolidate_images(folder, flight, sensor_type, sensor_name, date)
+                                        folder_match = True
+                                    else:
+                                        print("--> Skipping consolidation.")
+                                        # You might want to decide if these lines should run if the user skips
+                                        # folders_multiple.append(folder) 
+                                        # folder_match = True
+                                    folder_match = True
+
+        if folder_match == False:
+            folders_not_matched.append(folder)
+            print(f'folder not matched: {folder}')              
+
+    return flight_dict
+
+def om_align_validation(step, flight_dict, config):
+
+    #Get the previous step from the config
+    step_dependency = config['uas_pipeline'][step]['step_dependency'][0]
+
+    #Get the output folders from the config
+    input_dir = os.path.join(config['base_folder'], config['uas_pipeline'][step_dependency]['output_folder'])
+    output_dir = os.path.join(config['base_folder'], config['uas_pipeline'][step]['output_folder'])
+    shapefiles_alignment_folder = os.path.join(config['base_folder'], config['uas_pipeline'][step]['shapefiles_alignment_folder'])
+    shapefiles_alignment_format = config['uas_pipeline'][step]['shapefiles_alignment_format']
+    
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                # To keep track of the input file from the last iteration
+                previous_input_file = None
+                # Sort the dates to ensure chronological order
+                sorted_dates = sorted(value3.keys())
+
+                shapefile_alignment = os.path.join(shapefiles_alignment_folder, shapefiles_alignment_format.format(om=om))
+
+                for date in sorted_dates:
+                    flight_dict[flight][om][sensor_type][date][step] = {}
+
+                    alignment_file = previous_input_file
+
+                    input_file_template = config['uas_pipeline'][step_dependency]['output_file']
+                    input_filename = input_file_template.format(om=om, sensor_type=sensor_type, date=date)  
+                    input_file = os.path.join(input_dir, input_filename)
+
+                    output_file_template = config['uas_pipeline'][step]['output_file']
+                    output_filename = output_file_template.format(om=om, sensor_type=sensor_type, date=date)
+                    output_file = os.path.join(output_dir, output_filename)
+
+                    # Store the current input file to be used as the alignment file in the next iteration
+                    previous_input_file = input_file
+
+                    flight_dict[flight][om][sensor_type][date][step]['input_path'] = input_file
+                    flight_dict[flight][om][sensor_type][date][step]['alignment_path'] = alignment_file
+
+                    # First, determine the status of the necessary inputs
+                    # This handles the case where alignment_file might be None
+                    inputs_ready = False
+                    if alignment_file is None:
+                        # First date, only input_file is required
+                        if os.path.exists(input_file):
+                            inputs_ready = True
+                    else:
+                        # Subsequent dates, both files are required
+                        if os.path.exists(input_file) and os.path.exists(alignment_file):
+                            inputs_ready = True
+
+                    # Now, set the status based on the inputs and the output
+                    output_exists = os.path.exists(output_file)
+
+                    if not os.path.exists(shapefile_alignment):
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'missing_shapefile_alignment'
+                    elif inputs_ready and output_exists:
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+                    elif inputs_ready and not output_exists:
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                    elif not inputs_ready and not output_exists:
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                    else: # This implicitly covers 'not inputs_ready and output_exists'
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'error'
+
+    return flight_dict
+
+def plottiles_validation(step, flight_dict, config):
+    
+    #Get the step dependency
+    step_dependency = config['uas_pipeline'][step]['step_dependency'][0]
+
+    #Get the output folders from the config
+    input_dir = os.path.join(config['base_folder'], config['uas_pipeline'][step_dependency]['output_folder'])
+    input_file_template = config['uas_pipeline'][step_dependency]['output_file']
+
+    plots_dict = config['plot_shapefiles']
+
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            shapefiles_exist = False
+            if om in plots_dict:
+                shapefiles_exist = True
+                plots_shapefiles = plots_dict[om]
+
+                for crop, shapefile in plots_shapefiles.items():
+                    shapefile = os.path.join(config['base_folder'], shapefile)
+                    #print(f'plot shapefile: {shapefile}')
+                    if not os.path.exists(shapefile):
+                        shapefiles_exist = False
+                        break
+                    
+            #print(f'shapefiles exist: {shapefiles_exist}')
+
+            for sensor_type, value3 in value2.items():
+                for date, _ in value3.items():
+                    flight_dict[flight][om][sensor_type][date][step] = {}
+                    output_dir_template = config['uas_pipeline'][step]['output_folder']
+                    output_dirname = output_dir_template.format(om=om, sensor_type=sensor_type, date=date, source = "om")
+                    output_dir = os.path.join(config['base_folder'], output_dirname)
+                    input_filename = input_file_template.format(om=om, sensor_type=sensor_type, date=date)
+                    input_file = os.path.join(input_dir, input_filename)
+
+                    flight_dict[flight][om][sensor_type][date][step]['input_path'] = input_file
+
+
+                    # Check if output dir does not exist and input file exists
+                    if not shapefiles_exist:
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'missing_plot_shapefiles'
+                    elif not os.path.exists(output_dir) and os.path.exists(input_file):
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                        if flight == 'western':
+                            print(f'input_file: {input_file}')
+                            print(f'output_dir: {output_dir}')
+                            print(f'shapefiles_exist: {shapefiles_exist}')
+                    # Check if output dir does not exist and input file does not exist
+                    elif not shapefiles_exist and not os.path.exists(output_dir) and not os.path.exists(input_file):
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                    # Check if output dir exists and input file exists if it does check that output plot tiles matches input plot polygons
+                    elif os.path.exists(output_dir) and os.path.exists(input_file):
+                        file_count = len(os.listdir(output_dir))
+
+                        # Count the shapes in the input shapefiles
+                        shapefiles = []
+                        for _, shapefile in config['plot_shapefiles'][om].items():
+                            shapefiles.append(os.path.join(config['base_folder'], shapefile))
+                        shape_count = 0
+                        for shapefile in shapefiles:
+                            shape_count += len(gpd.read_file(shapefile))
+
+                        # If the file_count is equal to the shape_count, then the step is complete
+                        if file_count == shape_count:
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+                        # Otherwise, flag an error
+                        else:
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'error'
+                    else:
+                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'error'
+
+        
+    return flight_dict
+
+def dgr_validation(step, flight_dict, config):
+    
+    step_sensor = config['uas_pipeline'][step]['sensor'][0]
+    image_extensions = ('.tif', '.jpg', '.jpeg')
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                if sensor_type == step_sensor:
+                    for date, _ in value3.items():
+                        flight_dict[flight][om][sensor_type][date][step] = {}
+                        output_dir_template = config['uas_pipeline'][step]['output_folder']
+                        output_dirname = output_dir_template.format(om=om, sensor_type=sensor_type, date=date)
+                        output_dir = os.path.join(config['base_folder'], output_dirname)
+                        input_folder = flight_dict[flight][om][sensor_type][date]['step1']['input_path']
+                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = input_folder
+
+                        img_dir = input_folder
+                        """if os.path.exists(f'{input_folder}OUTPUT_{om}'):
+                            img_dir = f'{input_folder}OUTPUT_{om}/'
+                        else:
+                            img_dir = f'{input_folder}OUTPUT/'"""
+
+                        # Check if output dir does not exist and input folder exists
+                        if not os.path.exists(output_dir) and os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                        # Check if output dir does not exist and input file does not exist
+                        elif not os.path.exists(output_dir) and not os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                        # Check if output dir exists and input file exists if it does check that output images matches input images
+                        elif os.path.exists(output_dir) and os.path.exists(input_folder):
+                            # image count in output directory
+                            output_image_count = sum(1 for image in os.listdir(output_dir) if image.lower().endswith(image_extensions))
+
+                            # image count in input folder 
+                            input_image_count = sum(1 for image in os.listdir(img_dir) if image.lower().endswith(image_extensions))
+
+                            # Count rows in csv files
+                            csv_files = [file for file in os.listdir(img_dir) if file.lower().endswith('.csv')]
+                            total_rows = 0
+                            for csv_file in csv_files:
+                                df = pd.read_csv(os.path.join(img_dir, csv_file))
+                                total_rows += len(df)
+
+                            # If the output image count is equal to the input image count, then the step is complete
+                            if output_image_count == 0:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = 'error: no images'
+                            elif output_image_count == total_rows:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+                            
+                            # Otherwise, flag an error
+                            else:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = f'error: {total_rows} csv_rows != {output_image_count} images'
+                        else:
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'error'
+
+    return flight_dict
+
+def ir_validation(step, flight_dict, config):
+
+    #Get the step dependency
+    omalign_dependency = config['uas_pipeline'][step]['step_dependency'][0]
+    dgr_dependency = config['uas_pipeline'][step]['step_dependency'][1]
+
+    step_sensor = config['uas_pipeline'][step]['sensor'][0]
+
+
+        #Get the output folders from the config
+    omalign_folder = os.path.join(config['base_folder'], config['uas_pipeline'][omalign_dependency]['output_folder'])
+    dgr_folder_template = os.path.join(config['base_folder'], config['uas_pipeline'][dgr_dependency]['output_folder'])
+    omalign_file_template = config['uas_pipeline'][omalign_dependency]['output_file']
+
+    output_folder_template = config['uas_pipeline'][step]['output_folder']
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                if sensor_type == step_sensor:
+                    for date, _ in value3.items():
+                        flight_dict[flight][om][sensor_type][date][step] = {}
+
+                        dgr_foldername = dgr_folder_template.format(om=om, sensor_type=sensor_type, date=date)
+                        dgr_folder = os.path.join(config['base_folder'], dgr_foldername)
+                        omalign_filename = omalign_file_template.format(om=om, sensor_type=sensor_type, date=date)
+                        omalign_file = os.path.join(omalign_folder, omalign_filename)
+                        output_foldername = output_folder_template.format(om=om, sensor_type=sensor_type, date=date)
+                        output_folder = os.path.join(config['base_folder'], output_foldername)
+
+                        flight_dict[flight][om][sensor_type][date][step]['alignment_path'] = omalign_file
+                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = dgr_folder
+
+                        # Check if output dir does not exist and input file exists
+                        if not os.path.exists(output_folder) and os.path.exists(omalign_file) and os.path.exists(dgr_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                        # Check if output dir does not exist and input file does not exist
+                        elif not os.path.exists(output_folder) and not os.path.exists(omalign_file) and os.path.exists(dgr_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'missing_omalign'
+                        elif not os.path.exists(output_folder) and os.path.exists(omalign_file) and not os.path.exists(dgr_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'missing_dgr'
+                        elif not os.path.exists(output_folder) and not os.path.exists(omalign_file) and not os.path.exists(dgr_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                        elif os.path.exists(output_folder) and os.path.exists(omalign_file) and os.path.exists(dgr_folder):
+                            # Count input images
+                            input_image_count = sum(1 for image in os.listdir(dgr_folder) if image.endswith('.tif') or image.endswith('.jpg') or image.endswith('.JPG') or image.endswith('.jpeg'))
+                            
+                            # Count output images
+                            output_image_count = sum(1 for image in os.listdir(output_folder) if image.endswith('.tif') or image.endswith('.jpg') or image.endswith('.JPG') or image.endswith('.jpeg'))
+                            # Count it complete if more than 10% of the input images are in the output folder
+                            if input_image_count < 10 * output_image_count:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+                            else:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = 'error - not enough images'
+                        else:
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'error'
+
+    return flight_dict
+
+def plot_patches_validation(step, flight_dict, config):
+
+    #Get the step dependency
+    step_dependency = config['uas_pipeline'][step]['step_dependency'][0]
+
+    step_sensor = config['uas_pipeline'][step]['sensor'][0]
+
+    #Get the output folders from the config
+    input_folder_template = os.path.join(config['base_folder'], config['uas_pipeline'][step_dependency]['output_folder'])
+    output_folder_template = os.path.join(config['base_folder'], config['uas_pipeline'][step]['output_folder'])
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                if sensor_type == step_sensor:
+                    for date, _ in value3.items():
+                        flight_dict[flight][om][sensor_type][date][step] = {}
+
+                        output_folder = output_folder_template.format(om=om, sensor_type=sensor_type, date=date, source = 'om')
+                        input_folder = input_folder_template.format(om=om, sensor_type=sensor_type, date=date, source = 'om')
+
+                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = input_folder
+
+
+                        # Check if output dir does not exist and input file exists
+                        if not os.path.exists(output_folder) and os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                        # Check if output dir does not exist and input file does not exist
+                        elif not os.path.exists(output_folder) and not os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                        elif os.path.exists(output_folder) and os.path.exists(input_folder):
+
+                            # The generator yields '1' for each match, and sum() adds them up.
+                            input_image_count = sum(1 for image in os.listdir(input_folder) if image.endswith('.tif') or image.endswith('.jpg') or image.endswith('.JPG') or image.endswith('.jpeg'))
+                            output_image_count = sum(1 for image in os.listdir(output_folder) if image.endswith('.tif') or image.endswith('.jpg') or image.endswith('.JPG') or image.endswith('.jpeg'))
+
+                            if input_image_count < .1 * output_image_count:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+                            else:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = f'error, {input_image_count} input images < .1 * {output_image_count} output images'
+                        else:
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'error'
+
+    return flight_dict
+
+def inf_gs_validation(step, flight_dict, config):
+
+    #Get the step dependency
+    step_dependency = config['uas_pipeline'][step]['step_dependency'][0]
+
+    step_sensor = config['uas_pipeline'][step]['sensor'][0]
+
+    #Get the output folders from the config
+    input_folder_template = os.path.join(config['base_folder'], config['uas_pipeline'][step_dependency]['output_folder'])
+    output_folder = os.path.join(config['base_folder'], config['uas_pipeline'][step]['output_folder'])
+
+    output_file_template = config['uas_pipeline'][step]['output_file']
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                if sensor_type == step_sensor:
+                    for date, _ in value3.items():
+                        flight_dict[flight][om][sensor_type][date][step] = {}
+
+                        output_filename = output_file_template.format(om=om, source="om", date=date)
+                        output_file = os.path.join(output_folder, output_filename)
+                        input_folder = input_folder_template.format(om=om, sensor_type=sensor_type, date=date, source = 'om')
+
+                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = input_folder
+
+                        # Check if output dir does not exist and input file exists
+                        if not os.path.exists(output_file) and os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                        # Check if output dir does not exist and input file does not exist
+                        elif not os.path.exists(output_file) and not os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                        elif os.path.exists(output_file) and os.path.exists(input_folder):
+                            try:
+                                with open(output_file, 'r') as f:
+                                    data = json.load(f)
+                                
+                                # This function will correctly explore both "corn" and "soy" branches
+                                # and sum the total number of plots.
+                                num_entries = count_keys_by_pattern(
+                                    data, 
+                                    is_match=lambda k: isinstance(k, str) and k.isdigit() and len(k) == 3
+                                )
+
+                                # The rest of your logic remains the same
+                                if num_entries > 50:
+                                    # Note: For your example file, the total count is 80 (corn) + 84 (soy) = 164
+                                    flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+                                else:
+                                    flight_dict[flight][om][sensor_type][date][step]['status'] = f'error < 50 entries ({num_entries})'
+                                    
+                            except json.JSONDecodeError:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = 'error - invalid json'
+                            except Exception as e:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = f'error - {e}'
+
+    return flight_dict
+
+def inf_cc_validation(step, flight_dict, config):
+
+        #Get the step dependency
+    step_dependency = config['uas_pipeline'][step]['step_dependency'][0]
+
+    step_sensor = config['uas_pipeline'][step]['sensor'][0]
+
+    #Get the output folders from the config
+    input_folder_template = os.path.join(config['base_folder'], config['uas_pipeline'][step_dependency]['output_folder'])
+    output_folder = os.path.join(config['base_folder'], config['uas_pipeline'][step]['output_folder'])
+
+    output_file_template = config['uas_pipeline'][step]['output_file']
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                if sensor_type == step_sensor:
+                    for date, _ in value3.items():
+                        flight_dict[flight][om][sensor_type][date][step] = {}
+
+                        output_filename = output_file_template.format(om=om, source="om", date=date)
+                        output_file = os.path.join(output_folder, output_filename)
+                        input_folder = input_folder_template.format(om=om, sensor_type=sensor_type, date=date, source = 'om')
+
+                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = input_folder
+
+                        # Check if output dir does not exist and input file exists
+                        if not os.path.exists(output_file) and os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                        # Check if output dir does not exist and input file does not exist
+                        elif not os.path.exists(output_file) and not os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                        elif os.path.exists(output_file) and os.path.exists(input_folder):
+                            try:
+                                with open(output_file, 'r') as f:
+                                    data = json.load(f)
+                                
+                                # This function will correctly explore both "corn" and "soy" branches
+                                # and sum the total number of plots.
+                                num_entries = count_keys_by_pattern(
+                                    data, 
+                                    is_match=lambda k: isinstance(k, str) and k.isdigit() and len(k) == 3
+                                )
+
+                                # The rest of your logic remains the same
+                                if num_entries > 50:
+                                    # Note: For your example file, the total count is 80 (corn) + 84 (soy) = 164
+                                    flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+                                else:
+                                    flight_dict[flight][om][sensor_type][date][step]['status'] = f'error < 50 entries ({num_entries})'
+                                    
+                            except json.JSONDecodeError:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = 'error - invalid json'
+                            except Exception as e:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = f'error - {e}'
+
+    return flight_dict
+
+def count_keys_by_pattern(data, is_match):
+    """
+    Recursively traverses a nested structure (dicts and lists) and counts
+    dictionary keys that satisfy the is_match function.
+    """
+    count = 0
+
+    # If the data is a dictionary, check its keys and traverse its values
+    if isinstance(data, dict):
+        for key, value in data.items():
+            # Check if the key itself is a match
+            if is_match(key):
+                count += 1
+            # Recursively count within the value
+            count += count_keys_by_pattern(value, is_match)
+            
+    # If the data is a list, traverse its items
+    elif isinstance(data, list):
+        for item in data:
+            count += count_keys_by_pattern(item, is_match)
+            
+    return count
+
+
+def inf_sr_validation(step, flight_dict, config):
+
+    #Get the step dependency
+    step_dependency = config['uas_pipeline'][step]['step_dependency'][0]
+
+    step_sensor = config['uas_pipeline'][step]['sensor'][0]
+
+    #Get the output folders from the config
+    input_folder_template = os.path.join(config['base_folder'], config['uas_pipeline'][step_dependency]['output_folder'])
+    output_folder = os.path.join(config['base_folder'], config['uas_pipeline'][step]['output_folder'])
+
+    output_file_template = config['uas_pipeline'][step]['output_file']
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                if sensor_type == step_sensor:
+                    for date, _ in value3.items():
+                        flight_dict[flight][om][sensor_type][date][step] = {}
+
+                        output_filename = output_file_template.format(om=om, source="om", date=date)
+                        output_file = os.path.join(output_folder, output_filename)
+                        input_folder = input_folder_template.format(om=om, sensor_type=sensor_type, date=date, source = 'om')
+
+                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = input_folder
+
+                        # Check if output dir does not exist and input file exists
+                        if not os.path.exists(output_file) and os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                        # Check if output dir does not exist and input file does not exist
+                        elif not os.path.exists(output_file) and not os.path.exists(input_folder):
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                        elif os.path.exists(output_file) and os.path.exists(input_folder):
+                            try:
+                                with open(output_file, 'r') as f:
+                                    data = json.load(f)
+                                
+                                # This function will correctly explore both "corn" and "soy" branches
+                                # and sum the total number of plots.
+                                num_entries = count_keys_by_pattern(
+                                    data, 
+                                    is_match=lambda k: isinstance(k, str) and k.isdigit() and len(k) == 3
+                                )
+
+                                # The rest of your logic remains the same
+                                if num_entries > 50:
+                                    # Note: For your example file, the total count is 80 (corn) + 84 (soy) = 164
+                                    flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+                                else:
+                                    flight_dict[flight][om][sensor_type][date][step]['status'] = f'error < 50 entries ({num_entries})'
+                                    
+                            except json.JSONDecodeError:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = 'error - invalid json'
+                            except Exception as e:
+                                flight_dict[flight][om][sensor_type][date][step]['status'] = f'error - {e}'
+
+    return flight_dict
+
+def process_geojson_validation(step, flight_dict, config):
+    return flight_dict
+
+def maptiles_validation(step, flight_dict, config):
+
+            #Get the step dependency
+    step_dependency = config['uas_pipeline'][step]['step_dependency'][0]
+
+    step_sensor = config['uas_pipeline'][step]['sensor'][0]
+
+    #Get the output folders from the config
+    input_file_template = os.path.join(config['base_folder'], config['uas_pipeline'][step_dependency]['output_folder'], config['uas_pipeline'][step_dependency]['output_file'])
+
+    for flight, value in flight_dict.items():
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                if sensor_type == step_sensor:
+                    for date, _ in value3.items():
+                        flight_dict[flight][om][sensor_type][date][step] = {}
+
+                        output_folder = os.path.join(config['base_folder'], config['publishing_folder'][om],om,date)
+                        input_file = input_file_template.format(om=om, sensor_type=sensor_type, date=date)
+
+                        flight_dict[flight][om][sensor_type][date][step]['input_path'] = input_file
+
+                        input_status = flight_dict[flight][om][sensor_type][date][step_dependency]['status']
+
+
+                        # Check if output dir does not exist and input file exists
+                        if not os.path.exists(output_folder) and input_status == 'complete':
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'validated'
+                        # Check if output dir does not exist and input file does not exist
+                        elif not os.path.exists(output_folder) and input_status != 'complete':
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'not_ready'
+                        elif os.path.exists(output_folder) and input_status == 'complete':
+                            # Confirm zoom levels from 15 to 24 exist
+
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'complete'
+
+                            for zoom in range(15, 25):
+                                zoom_folder = os.path.join(output_folder, str(zoom))
+                                #Count recursively the number of files in the zoom folder with .png suffix
+                                if os.path.exists(zoom_folder):
+                                    tile_count = 0
+
+                                    # os.walk() recursively visits every directory starting from zoom_folder
+                                    for dirpath, dirnames, filenames in os.walk(zoom_folder):
+                                        # 'filenames' is a list of files in the current 'dirpath'
+                                        for file in filenames:
+                                            if file.endswith('.png'):
+                                                tile_count += 1
+                                    if tile_count == 0:
+                                        flight_dict[flight][om][sensor_type][date][step]['status'] = 'empty_zoom_level'
+                                elif not os.path.exists(zoom_folder):
+                                    flight_dict[flight][om][sensor_type][date][step]['status'] = 'missing_zoom_level'
+                                else:
+                                    flight_dict[flight][om][sensor_type][date][step]['status'] = 'error'
+
+                        else:
+                            flight_dict[flight][om][sensor_type][date][step]['status'] = 'error'
+    return flight_dict
+
+
+def make_dict_bystep(config, uas_pipeline):
+    flight_dict = {}
+    folders_not_matched = []
+    folders_multiple = []
+    om_remaining = []
+    folders_remaining = []
+
+    flight_config_dict = config['flight_list']
+    sensor_dict = config['sensor_dict']
+    om_folder = config['om_folder']
+
+
+    validation_dict = {'step1': om_validation,
+                       'step2': om_align_validation,
+                       'step3': plottiles_validation,
+                       'step4': dgr_validation,
+                       'step5': ir_validation,
+                       'step6': plot_patches_validation,
+                       'step7': inf_gs_validation,
+                       'step8': inf_cc_validation,
+                       'step9': inf_sr_validation,
+                       'step10': process_geojson_validation,
+                       'step11': maptiles_validation,
+                       }
+
+    # Initialize the nested keys in the flight_config_dict in the form of[flight][orthomosaic] and filter by location_filter
+    for flight, value in flight_config_dict.items():
+        if flight not in flight_dict:
+            flight_dict[flight]= {}
+
+            for om in value.keys():
+                if om not in flight_dict[flight]:
+                    flight_dict[flight][om] = {}
+
+    # Update flight_dict with the results from om_validation
+    validation_dispatcher = {}
+
+    checkpoints = []
+    for i, step in enumerate(uas_pipeline.keys()):
+        print(f'step: {step}')
+        checkpoints.append(time.time())
+        if i > 0:
+            print(f'time to complete step {i-1}: {checkpoints[i] - checkpoints[i-1]:.2f} seconds')
+        validation_function = validation_dict[step]
+        validation_dispatcher[step] = validation_function
+        if not validation_function:
+            print(f'No validation function found for {step}')
+            continue
+        flight_dict = validation_function(step, flight_dict, config)
+
+    return flight_dict
+
+def filter_flight_dict(flight_dict, flight_filter = None, date_range = None):
+
+    flight_dict_filtered = {}
+
+
+    for flight, value in flight_dict.items():
+        if flight_filter and flight != flight_filter:
+            continue
+        for om, value2 in value.items():
+            for sensor_type, value3 in value2.items():
+                for date, value4 in value3.items():
+                    if date_range and (date < date_range[0] or date > date_range[1]):
+                        continue
+                    # This is the correct and most efficient way to do it
+                    flight_dict_filtered.setdefault(flight, {}).setdefault(om, {}).setdefault(sensor_type, {})[date] = value4
+
+    return flight_dict_filtered
 
 
 def get_image_metadata(image_path):
@@ -277,48 +1029,99 @@ def create_omspecific_output_folders(flight_dict, flight_config_dict, rerun_boun
             if flight_config_dict[flight][om]:
                 boundary_file = flight_config_dict[flight][om]
                 print(f'boundary file: {boundary_file}')
-                for sensor, dates in value2.items():
+                for sensor, value3 in value2.items():
                     print(f'sensor: {sensor}')
-                    for date, folder in dates.items():
+                    for date, value4 in value3.items():
                         print(f'date: {date}')
-                        if date == '20240816':
-                             print(f' waltz flight: {date}')
-                        print(f'folder: {folder}')
-                        omimage_folder = os.path.join(folder, f'OUTPUT_{om}')
+                        folder = value4['step1']['input_path']
+                        # Get the parent folder of the folder
+                        parent_folder = os.path.dirname(folder)
+                        #source_folder = os.path.join(os.path.dirname(folder), 'OUTPUT')
+                        source_folder = Path(folder).parents[0] / 'OUTPUT'
+                        #print(f'folder: {folder}')
+                        omimage_folder = folder
                         if not os.path.exists(omimage_folder) or rerun_boundary:
-                            filtered_images = filter_images_by_boundary(om, folder, boundary_file, force_exiftags = False)
-                            print(f' Length of filtered_images: {len(filtered_images)}')
-                            move_images_to_folder(filtered_images, folder, om)
-                            print(f'folder: {folder}')
+                            filtered_images = filter_images_by_boundary(om, source_folder, boundary_file, force_exiftags = False)
+                            #print(f' Length of filtered_images: {len(filtered_images)}')
+                            move_images_to_folder(filtered_images, source_folder, om)
+                            #print(f'folder: {folder}')
+                            # Create csv file with the images that were moved
+                        csv_files_source = glob.glob(os.path.join(source_folder, "*geotags.csv"))
+                        csv_files_target = glob.glob(os.path.join(omimage_folder, "*geotags.csv"))
+
+                        if not csv_files_target and csv_files_source:
+                        # 1. Get a list of image filenames that are now in the target directory.
+                            try:
+                                moved_image_names = {f for f in os.listdir(omimage_folder) if f.lower().endswith(('.tif', '.jpg', '.jpeg'))}
+                                if not moved_image_names:
+                                    print("No images found in the target directory. Skipping CSV creation.")
+                                    # Use 'continue' or 'return' here depending on your loop structure
+                                    continue
+                            except FileNotFoundError:
+                                print(f"Error: Target directory {omimage_folder} does not exist. Cannot create CSV.")
+                                continue
+                            
+                            # 2. Read all source CSVs into a single DataFrame.
+                            df_csv_source = pd.concat((pd.read_csv(f) for f in csv_files_source), ignore_index=True)
+
+
+                            # 3. Filter the DataFrame to keep only rows corresponding to moved images.
+                            # The .isin() method is highly efficient for this task.
+                            df_new_csv = df_csv_source[df_csv_source['# image name'].isin(moved_image_names)].copy()
+
+
+                            # 4. Construct the full output path and save the new, filtered DataFrame.
+                            output_csv_name = f'{om}_{sensor}_{date}_geotags.csv'
+                            output_csv_path = os.path.join(omimage_folder, output_csv_name)
+                            
+                            df_new_csv.to_csv(output_csv_path, index=False)
+                            
+                            print(f"Successfully created '{output_csv_name}' with {len(df_new_csv)} entries.")
+
+
+
 
 def filter_images_by_boundary(om, folder, boundary_file, force_exiftags=False):
     #Load all of the images into a dictionary where the key is the image name and the value is the image path
     #Load the boundary into a shapely object
     #Filter the images by the boundary
 
+
     boundary = gpd.read_file(boundary_file)
     boundary.to_crs(epsg=4326, inplace=True)
     boundary = boundary.unary_union
 
     filtered_images = []
-    output_folder = folder + 'OUTPUT/'
+    #output_folder = folder + 'OUTPUT/'
+    output_folder = folder
     omimage_folder = os.path.join(folder, f'OUTPUT_{om}')
 
     if os.path.exists(omimage_folder):
         # Move images back to OUTPUT folder
         for f in os.listdir(omimage_folder):
-            old_path = os.path.join(omimage_folder, f)
-            new_path = os.path.join(output_folder, f)
-            os.rename(old_path, new_path)
-        print(f'Moved {old_path} → {new_path}')
+            if f.lower().endswith(('.tif', '.jpg', '.JPG', '.jpeg')):
+                old_path = os.path.join(omimage_folder, f)
+                new_path = os.path.join(output_folder, f)
+                os.rename(old_path, new_path)
+                print(f'Moved {old_path} → {new_path}')
+
+            elif f.lower().endswith(('.csv')):
+                #Delete the csv file
+                os.remove(os.path.join(omimage_folder, f))
+                print(f'Deleted {f}')
+            else:
+                print(f'Skipping {f}')
 
     # if it exists load csv file
     csv_files = glob.glob(os.path.join(output_folder, "*.csv"))
 
+    
+
+
     # check if there is a csv file but it is empty
     if csv_files:
         try:
-            df_csv = pd.read_csv(csv_files[0])
+            df_csv = pd.concat((pd.read_csv(f) for f in csv_files), ignore_index=True)
             if df_csv.empty:
                 print(f'Empty CSV file found: {csv_files[0]}')
                 csv_files = []
@@ -352,7 +1155,7 @@ def filter_images_by_boundary(om, folder, boundary_file, force_exiftags=False):
         # Read all CSV files into a single DataFrame
         df_csv = pd.concat((pd.read_csv(f) for f in csv_files), ignore_index=True)
         for i, f in enumerate(sorted(os.listdir(output_folder))):
-            if f.lower().endswith(('.tif', '.jpg', '.JPG', '.jpeg')):
+            if f in df_csv['# image name'].values:
                 image_path = os.path.join(output_folder, f)
                 # Find the row in the csv file that matches the image name
                 row = df_csv.loc[df_csv['# image name'] == f]
@@ -370,8 +1173,6 @@ def filter_images_by_boundary(om, folder, boundary_file, force_exiftags=False):
                                 print(f'Image {f} is outside the boundary')
                 else:
                     print(f'No metadata found for {f}')
-                    # If it cannot be 
-                    filtered_images.append(image_path)
 
     print(f'returned filtered images: {len(filtered_images)}')
     return filtered_images
@@ -379,8 +1180,9 @@ def filter_images_by_boundary(om, folder, boundary_file, force_exiftags=False):
 def move_images_to_folder(images, folder, om):
     # Move images within the specified boundary to a new folder
 
-    output_folder = os.path.join(folder, 'OUTPUT')
-    omimage_folder = os.path.join(folder, f'OUTPUT_{om}')
+    output_folder = folder
+    #omimage_folder = os.path.join(folder, f'OUTPUT_{om}')
+    omimage_folder = Path(folder).parents[0] / f'OUTPUT_{om}'
 
     # Create omimage folder if it doesn't exist
     os.makedirs(omimage_folder, exist_ok=True)
@@ -404,16 +1206,16 @@ def consolidate_images(folder, location, sensor_type, sensor_name, date):
     #Move all images to a single folder
     #Find all folders for the sensor_type and date
     print(f'-------Multiple folders found')
-    print(f'location = {location}')
+    print(f'field = {location}')
     print(f'sensor_name = {sensor_name}')
     print(f'date = {date}')
 
     # Go up to the parent folder
     parent_folder = Path(folder).parents[2]
-    print(f'parent_path: {parent_folder}')  # Output: /home/user
+    print(f'parent_path: {parent_folder}')
 
     # Find all folders for the sensor_type case insensitive
-    sensor_folders = sorted([f for f in os.listdir(parent_folder) if sensor_name in f.lower()])
+    sensor_folders = sorted([f for f in os.listdir(parent_folder) if sensor_name in f.lower() and location in f.lower()])
 
     print(f'sensor_folders = {sensor_folders}')
 
@@ -421,7 +1223,12 @@ def consolidate_images(folder, location, sensor_type, sensor_name, date):
     for sensor_folder in sensor_folders:
         image_folder = os.path.join(parent_folder, sensor_folder,'01_Images', sensor_folder, 'OUTPUT')
         image_folders.append(image_folder)
-    #print(f'image_folders = {image_folders}')
+    print(f'image_folders = {image_folders}')
+
+    #Check if the image folders already contain consolidate images with a pattern of '{number}_*.
+    if any(file.lower().endswith(('.tif', '.jpg', '.jpeg')) for file in os.listdir(image_folder[0]) if re.match(r'^\d+_', file)):
+        print(f'{image_folder[0]} already contains consolidated images. Skipping consolidation.')
+        return
 
     # Move all images to first folder and prepend with folder number
     for i, image_folder in enumerate(image_folders):
@@ -429,7 +1236,12 @@ def consolidate_images(folder, location, sensor_type, sensor_name, date):
             print(f'Processing {image_folder}')
             for file in os.listdir(image_folder):
                 if file.lower().endswith(('.tif', '.jpg', '.jpeg')):
-                    os.rename(os.path.join(image_folder, file), os.path.join(image_folders[0], f"{i+1}_{file}"))
+                    new_filepath = os.path.join(image_folders[0], f"{i+1}_{file}")
+                    if not os.path.exists(new_filepath):
+                        os.rename(os.path.join(image_folder, file), new_filepath)
+                    else:
+                        print(f'{new_filepath} already exists. Skipping {file} and ending consolidate_images function')
+                        return
                     #print(f'Moving {file} to {image_folders[0]}')
                 if file.lower().endswith('.csv'):
                     # Prepend image names with folder number
@@ -568,10 +1380,6 @@ if __name__ == "__main__":
 
     # Count the number of files in each 'OUTPUT' folder
     output_file_counts = count_files_in_output(folders_output_sorted)
-
-    # Write the sorted lists to separate CSV files
-    #write_folders_to_csv(path_to_list + 'notgeotagged.csv', folders_nooutput_sorted)
-    #write_folders_to_csv(path_to_list + 'geotagged.csv', folders_output_sorted)
 
     # Write the sorted lists to separate CSV files
     write_folders_to_csv(path_to_list + 'notgeotagged.csv', [(folder, 0) for folder in folders_nooutput_sorted])  # Use 0 for file count

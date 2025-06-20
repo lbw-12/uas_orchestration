@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J "gs_{{sensor_type}}"
+#SBATCH -J "gs_{{job_title}}"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output={{ log_dir }}/%j.txt
-#SBATCH --error={{ log_dir }}/%j.err
+#SBATCH --output={{ log_dir }}/%j-{{job_title}}-inf_gs.txt
+#SBATCH --error={{ log_dir }}/%j-{{job_title}}-inf_gs.err
 #SBATCH --time=00:20:00
 #SBATCH --mem=300G
 #SBATCH --gpus-per-node=1
@@ -30,7 +30,11 @@ start_time=$(date +%s)
 python "{{ python_script }}" \
     --input_dir "{{ gs_input_dir }}" \
     --output_dir "{{ output_path_gs }}" \
-    --model_path "{{ model_path }}" 
+    --model_path "{{ model_path }}" \
+    --field "{{ om }}" \
+    --plotimage_source "{{ plotimage_source }}" \
+    --date "{{ date }}"
+
 
 
 end_time=$(date +%s)

@@ -2,11 +2,13 @@
 #SBATCH -N 1
 #SBATCH -A PAS2699
 #SBATCH -J "om_{{om}}_{{sensor_type}}_{{date}}"
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --exclusive
+#SBATCH --mem=0 # This gets the full memory of the node and stores it in SLURM_MEM_PER_NODE
 #SBATCH -o "{{ processing_dir }}logs_om/%j-{{job_title}}-om.txt"
-#SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=24
-#SBATCH --time=8:00:00
-#SBATCH --mem=128G
+#SBATCH --time=16:00:00
+
 
 export MPLBACKEND=Agg
 
@@ -18,7 +20,7 @@ free -h
 start_time=$(date +%s)
 
 job_name="{{ job_title }}"
-img_dir="{{ img_dir }}"
+img_dir="{{ input_path }}"
 processing_subdir="{{ processing_subdir }}_$SLURM_JOB_ID"
 om_dir="{{ om_dir }}"
 

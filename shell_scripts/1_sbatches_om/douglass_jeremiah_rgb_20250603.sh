@@ -2,11 +2,13 @@
 #SBATCH -N 1
 #SBATCH -A PAS2699
 #SBATCH -J "om_douglass_jeremiah_rgb_20250603"
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --exclusive
+#SBATCH --mem=0 # This gets the full memory of the node and stores it in SLURM_MEM_PER_NODE
 #SBATCH -o "/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_om/%j-douglass_jeremiah_rgb_20250603-om.txt"
-#SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=24
-#SBATCH --time=8:00:00
-#SBATCH --mem=128G
+#SBATCH --time=16:00:00
+
 
 export MPLBACKEND=Agg
 

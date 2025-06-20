@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J "plottile_to_patches_{{sensor_type}}"
+#SBATCH -J "plottile_to_patches_{{job_title}}"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output={{ log_dir }}/%j.txt
-#SBATCH --error={{ log_dir }}/%j.err
+#SBATCH --output={{ log_dir }}/%j-{{job_title}}-plot_to_patch.txt
+#SBATCH --error={{ log_dir }}/%j-{{job_title}}-plot_to_patch.err
 #SBATCH --time=10:00:00
 #SBATCH --mem=10G
 #SBATCH -A PAS2699

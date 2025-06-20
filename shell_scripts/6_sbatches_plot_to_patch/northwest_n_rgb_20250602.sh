@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J "plottile_to_patches_rgb"
+#SBATCH -J "plottile_to_patches_northwest_n_rgb_20250602"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_plot_to_patch/%j.txt
-#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_plot_to_patch/%j.err
+#SBATCH --output=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_plot_to_patch/%j-northwest_n_rgb_20250602-plot_to_patch.txt
+#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_plot_to_patch/%j-northwest_n_rgb_20250602-plot_to_patch.err
 #SBATCH --time=10:00:00
 #SBATCH --mem=10G
 #SBATCH -A PAS2699

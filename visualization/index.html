@@ -862,6 +862,35 @@
   // ------------------------------
   // CONFIG & STATE
   // ------------------------------
+
+  const defaultNumeric = "rgba(128,128,128,0.7)";
+
+  // --- ADD THIS ENTIRE BLOCK ---
+  const sleep = ms => new Promise(res => setTimeout(res, ms));
+  let tileLoadPromise = Promise.resolve();
+
+  const customDelayedLoader = function(tile, src) {
+    // Chain the next tile load onto the previous one
+    tileLoadPromise = tileLoadPromise.then(() => {
+        return fetch(src)
+            .then(response => {
+                if (!response.ok) { return Promise.reject(); }
+                return response.blob();
+            })
+            .then(blob => {
+                const objectURL = URL.createObjectURL(blob);
+                tile.getImage().src = objectURL;
+            })
+            .catch(() => {
+                tile.setState(ol.TileState.ERROR);
+            })
+            .finally(() => {
+                // IMPORTANT: Wait 50ms before allowing the next tile to start
+                return sleep(50);
+            });
+    });
+  };
+
   const baseUrl       = "https://g-e36592.f0ce50.e229.dn.glob.us/";
   const foldersJson   = baseUrl + "folders.json";
   const tilePattern   = "{year}/{field}/{date}/{z}/{x}/{-y}.png";
@@ -888,7 +917,6 @@
     'V10':10,'V11':10,'V12':10,'V13':11,'V14':11,'V15':11,'V16':11,'V17':11,'V18':11,'VT':11,
     'R1':12,'R2':13,'R3':14,'R4':15,'R5':16,'R6':17, 'R7':18, 'R8':19
     };
-  const defaultNumeric = "rgba(128,128,128,0.7)";
 
   // ------------------------------
   // DOM UTILS
@@ -1234,8 +1262,13 @@ function toggleSidebar() {
     });
 
     // orthomosaic
-    const xyz = new ol.source.XYZ({ url: baseUrl+tilePattern, minZoom:15, maxZoom:24 });
-    orthoLayer = new ol.layer.Tile({ source:xyz, visible:true });
+    const xyz = new ol.source.XYZ({
+      url: baseUrl + tilePattern,
+      minZoom: 15,
+      maxZoom: 24,
+      tileLoadFunction: customDelayedLoader // <-- APPLY THE LOADER HERE
+    });
+    orthoLayer = new ol.layer.Tile({ source: xyz, visible: true });
 
     // base
     map = new ol.Map({
@@ -1252,6 +1285,8 @@ function toggleSidebar() {
 
     // popups, pointer cursor, etc.
     initPopupAndCursor();
+
+
   }
 
   function dynamicStyle(feature) {
@@ -1307,7 +1342,8 @@ function toggleSidebar() {
     orthoLayer.setSource(new ol.source.XYZ({
       url:     tileUrl,
       minZoom: 15,
-      maxZoom: 24
+      maxZoom: 24,
+      tileLoadFunction: customDelayedLoader // <-- USE THE DELAYED LOADER
     }));
 
     if (meta.extent && selectedField !== lastField) {

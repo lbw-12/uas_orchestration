@@ -2,13 +2,12 @@
 #SBATCH -J "omalign_kuntz_springhill_rgb_20250602"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
+#SBATCH --exclusive
+#SBATCH --mem=0 # This gets the full memory of the node and stores it in SLURM_MEM_PER_NODE#SBATCH --nodes=1
 #SBATCH -A PAS2699
-#SBATCH -o "/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_omalign/%j.txt"
-#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_omalign/%j.err
-#SBATCH --mem=128GB
+#SBATCH -o "/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_omalign/%j-kuntz_springhill_rgb_20250602-omalign.txt"
+#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_omalign/%j-kuntz_springhill_rgb_20250602-omalign.txt
 #SBATCH --time=0:30:00
-
 
 source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
 conda activate harvest

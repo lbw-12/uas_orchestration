@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J "cc_rgb"
+#SBATCH -J "cc_northwest_bftb_rgb_20250507"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_cc/%j.txt
-#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_cc/%j.err
+#SBATCH --output=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_cc/%j-northwest_bftb_rgb_20250507-inf_cc.txt
+#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_cc/%j-northwest_bftb_rgb_20250507-inf_cc.err
 #SBATCH --time=00:20:00
 #SBATCH --mem=100G
 #SBATCH -A PAS2699
@@ -23,8 +23,11 @@ start_time=$(date +%s)
 
 python "inference_canopy_cover.py" \
     --input_dir "/fs/ess/PAS2699/nitrogen/data/uas/2025/plottiles/plot_tiles_rgb_om/northwest_bftb_rgb_20250507/" \
-    --output_json "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/inference_northwest_bftb_rgb_20250507_cc.json" \
-    --model_path "/fs/ess/PAS2699/nitrogen/models/canopy_coverage/cc_kmeans_model.pkl" 
+    --output_json "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/inf_cc_northwest_bftb_om_20250507.json" \
+    --model_path "/fs/ess/PAS2699/nitrogen/models/canopy_coverage/cc_kmeans_model.pkl" \
+    --field "northwest_bftb" \
+    --plotimage_source "om" \
+    --date "20250507"
 
 # Get the size of the output folder
 output_size=$(du -sh "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/" | awk '{print $1}')

@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH -J "sr_ms"
+#SBATCH -J "sr_northwest_replant_ms_20250602"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_sr/%j.txt
-#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_sr/%j.err
-#SBATCH --time=05:00:00
+#SBATCH --output=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_sr/%j-northwest_replant_ms_20250602-inf_sr.txt
+#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_inf_sr/%j-northwest_replant_ms_20250602-inf_sr.err
+#SBATCH --time=00:20:00
 #SBATCH --mem=100G
 #SBATCH -A PAS2699
 
@@ -24,8 +24,11 @@ start_time=$(date +%s)
 python "inference_spectral_reflectance.py" \
     --input_dir "/fs/ess/PAS2699/nitrogen/data/uas/2025/plottiles/plot_tiles_ms_om/northwest_replant_ms_20250602/" \
     --output_dir "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/" \
-    --output_json "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/inference_northwest_replant_ms_20250602_sr.json" \
-    --model_path "/fs/ess/PAS2699/nitrogen/models/spectral_reflectance/sr_rf_classifier_model.pkl" 
+    --output_json "/fs/ess/PAS2699/nitrogen/data/uas/2025/inference/inf_sr_northwest_replant_om_20250602.json" \
+    --model_path "/fs/ess/PAS2699/nitrogen/models/spectral_reflectance/sr_rf_classifier_model.pkl" \
+    --field "northwest_replant" \
+    --plotimage_source "om" \
+    --date "20250602"
 
 
 end_time=$(date +%s)

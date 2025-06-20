@@ -5,15 +5,14 @@
 #SBATCH --exclusive
 #SBATCH --mem=0 # This gets the full memory of the node and stores it in SLURM_MEM_PER_NODE
 #SBATCH -A PAS2699
-#SBATCH -o "{{ log_dir }}/%j.txt"
-#SBATCH --error={{ log_dir }}/%j.err
+#SBATCH -o "{{ log_dir }}/%j-{{job_title}}-dgr.txt"
+#SBATCH --error={{ log_dir }}/%j-{{job_title}}-dgr.err
 #SBATCH --time=0:30:00
-
 
 source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
 conda activate harvest
 
-FLIGHT_DIR="{{ img_dir }}"
+FLIGHT_DIR="{{ input_path }}"
 OUTPUT_PATH_GEO="{{ output_path_geo }}"
 
 job_name="{{ job_title }}"

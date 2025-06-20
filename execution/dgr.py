@@ -443,8 +443,8 @@ def main():
         print("Failed to collect necessary information")
         return
 
-    csv_file, input_dir, output_dir, sensor, elevation_map_path = args_to_pass
-    df = pd.read_csv(csv_file)
+    df_csv, input_dir, output_dir, sensor, elevation_map_path = args_to_pass
+    df = df_csv
     crs = get_crs_zone(df)
     location = get_location(input_dir)
 
@@ -497,9 +497,9 @@ def collect_info_specific_path(filepath, output_folder):
     northwest_elevation_map_path = location_of_elevation_tiles + "northwest/"
     f7_elevation_map_path = location_of_elevation_tiles + "f7/"
     kuntz_elevation_map_path = location_of_elevation_tiles + "kuntz/"
+    print(f'filepath: {filepath}')
     flight = filepath.split("/")[-3]
     print(f'flight: {flight}')
-    print(f'filepath: {filepath}')
     elevation_map_path = ""
     
     if "western" in flight.lower():
@@ -514,7 +514,7 @@ def collect_info_specific_path(filepath, output_folder):
     elif "northwest" in flight.lower():
         elevation_map_path = northwest_elevation_map_path
         # shp_files = shp_files_northwest
-    elif "farmscience" in flight.lower():
+    elif "farmscience" in flight.lower() or "fsr" in flight.lower():
         elevation_map_path = f7_elevation_map_path
         # shp_files = shp_files_f7
     elif "kuntz" in flight.lower():
@@ -551,19 +551,35 @@ def collect_info_specific_path(filepath, output_folder):
     OUTPUT_PATH_GEO = output_folder
 
     # Go up a level to get the geotags.csv file
-    CSV_DIR = Path(INPUT_DIR).parent / 'OUTPUT'
+    #CSV_DIR = Path(INPUT_DIR).parent / 'OUTPUT'
+    CSV_DIR = Path(INPUT_DIR)
     print(f'csv dir: {CSV_DIR}')
-    # Find the first *geotags.csv file in the directory
+    # Find the *geotags.csv files in the directory
     csv_files = list(CSV_DIR.glob('*geotags.csv'))
+
+    if csv_files:
+        try:
+            df_csv = pd.concat((pd.read_csv(f) for f in csv_files), ignore_index=True)
+            if df_csv.empty:
+                print(f'Empty CSV file found: {csv_files[0]}')
+                csv_files = []
+        except pd.errors.EmptyDataError:
+            print(f'CSV file exists but has no data: {csv_files[0]}')
+            csv_files = []
+        except Exception as e:
+            print(f'Error reading CSV file {csv_files[0]}: {str(e)}')
+            csv_files = []
+
+
     if not csv_files:
         print("No geotags.csv file found")
         return
     CSV_FILE = csv_files[0]
     print(f'csv file: {CSV_FILE}')
 
-    print(CSV_FILE, INPUT_DIR, OUTPUT_PATH_GEO,MODE, elevation_map_path)
+    print(f'csv_files: {csv_files}, \nINPUT_DIR: {INPUT_DIR}, \nOUTPUT_PATH_GEO: {OUTPUT_PATH_GEO}, \nMODE: {MODE}, \nelevation_map_path: {elevation_map_path}')
 
-    return CSV_FILE, INPUT_DIR, OUTPUT_PATH_GEO, MODE, elevation_map_path
+    return df_csv, INPUT_DIR, OUTPUT_PATH_GEO, MODE, elevation_map_path
 
 
 

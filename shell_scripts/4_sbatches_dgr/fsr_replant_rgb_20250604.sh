@@ -5,15 +5,14 @@
 #SBATCH --exclusive
 #SBATCH --mem=0 # This gets the full memory of the node and stores it in SLURM_MEM_PER_NODE
 #SBATCH -A PAS2699
-#SBATCH -o "/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_dgr/%j.txt"
-#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_dgr/%j.err
+#SBATCH -o "/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_dgr/%j-fsr_replant_rgb_20250604-dgr.txt"
+#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_dgr/%j-fsr_replant_rgb_20250604-dgr.err
 #SBATCH --time=0:30:00
-
 
 source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
 conda activate harvest
 
-FLIGHT_DIR="/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250604-FSR/20250604_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250604_FSR_Nitrogen_Sony150 Flight 01/OUTPUT/"
+FLIGHT_DIR="/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250604-FSR/20250604_FSR_Replant_Sony150 Flight 01/01_Images/20250604_FSR_Replant_Sony150 Flight 01/OUTPUT/"
 OUTPUT_PATH_GEO="/fs/ess/PAS2699/nitrogen/data/uas/2025/dgr/fsr_replant_rgb_20250604/"
 
 job_name="fsr_replant_rgb_20250604"

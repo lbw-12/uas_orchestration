@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../../fs/ess/PAS2699/nitrogen/data/uas/2025/config"
+		},
+		{
+			"path": "../../../../../fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_perf"
+		},
+		{
+			"path": "../../../../../fs/ess/PAS2699/nitrogen/data/uas/2024/config"
+		}
+	],
+	"settings": {}
+}

@@ -4,8 +4,8 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
 #SBATCH -A PAS2699
-#SBATCH -o "/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_maptiles/%j.txt"
-#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_maptiles/%j.err
+#SBATCH -o "/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_maptiles/%j-kuntz_springhill_rgb_20250512-maptiles.txt"
+#SBATCH --error=/fs/ess/PAS2699/nitrogen/data/uas/2025/processing/logs_maptiles/%j-kuntz_springhill_rgb_20250512-maptiles.err
 #SBATCH --mem=32GB
 #SBATCH --time=01:00:00
 
@@ -32,10 +32,12 @@ echo "Running map tile creation for: kuntz_springhill_rgb_20250512"
 # Set the path to your input orthomosaic raster file (use OSC project/scratch paths)
 INPUT_ORTHOMOSAIC="$OM_DIR/$OM_FILENAME"
 
-# Set the desired output directory for the tiles
+if [ ! -f "$INPUT_ORTHOMOSAIC" ]; then
+    echo "Error: Input orthomosaic not found at $INPUT_ORTHOMOSAIC"
+    exit 1
+fi
 
-# Create maptile directory exists
-mkdir -p "/fs/ess/PAS2699/nitrogen/data/uas/published/kuntz_private/2025/kuntz_springhill/20250512"
+# Set the desired output directory for the tiles
 OUTPUT_DIRECTORY="/fs/ess/PAS2699/nitrogen/data/uas/published/kuntz_private/2025/kuntz_springhill/20250512"
 
 # Set the desired zoom levels
@@ -50,13 +52,6 @@ RESAMPLING="average"
 # or the value you set in --ntasks-per-node.
 NB_PROCESSES=${SLURM_CPUS_PER_TASK:-12}  # Use 12 as default if SLURM_CPUS_PER_TASK is not set
 
-# --- Script Logic ---
-
-# Check if the input orthomosaic file exists
-if [ ! -f "$INPUT_ORTHOMOSAIC" ]; then
-    echo "Error: Input orthomosaic file not found at $INPUT_ORTHOMOSAIC"
-    exit 1
-fi
 
 # Create the output directory if it doesn't exist (Slurm might run this multiple times if array job)
 # For a single job, this is fine.
@@ -118,7 +113,9 @@ if [ ! -f "$log_file" ]; then
 fi
 
 # Use dirname to get the parent directory
-maptiles_base_dir=$(dirname "/fs/ess/PAS2699/nitrogen/data/uas/published/kuntz_private/2025/kuntz_springhill/20250512")
+maptiles_dir=/fs/ess/PAS2699/nitrogen/data/uas/published/kuntz_private/2025/kuntz_springhill/20250512
+maptiles_base_dir="${maptiles_dir%/*/*/*}"
+
 
 # execute folders_to_json.py
 python -u ../utils/folders_to_json.py --scan_dir "$maptiles_base_dir"

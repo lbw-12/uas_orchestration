@@ -1,11 +1,11 @@
 #!/bin/bash
-#SBATCH -J "sr_{{sensor_type}}"
+#SBATCH -J "sr_{{job_title}}"
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --output={{ log_dir }}/%j.txt
-#SBATCH --error={{ log_dir }}/%j.err
-#SBATCH --time=05:00:00
+#SBATCH --output={{ log_dir }}/%j-{{job_title}}-inf_sr.txt
+#SBATCH --error={{ log_dir }}/%j-{{job_title}}-inf_sr.err
+#SBATCH --time=00:20:00
 #SBATCH --mem=100G
 #SBATCH -A PAS2699
 
@@ -25,7 +25,10 @@ python "{{ python_script }}" \
     --input_dir "{{ sr_input_dir }}" \
     --output_dir "{{ output_path_sr }}" \
     --output_json "{{ output_path_sr_json }}" \
-    --model_path "{{ model_path }}" 
+    --model_path "{{ model_path }}" \
+    --field "{{ om }}" \
+    --plotimage_source "{{ plotimage_source }}" \
+    --date "{{ date }}"
 
 
 end_time=$(date +%s)
