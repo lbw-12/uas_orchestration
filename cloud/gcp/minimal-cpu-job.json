@@ -1,0 +1,17 @@
+{
+    "taskGroups": [{
+      "taskSpec": {
+        "runnables": [{
+          "container": {
+            "imageUri": "gcr.io/google-containers/busybox",
+            "entrypoint": "/bin/sh",
+            "commands": ["-c", "echo 'Hello from a minimal CPU job!' && sleep 10"]
+          }
+        }]
+      },
+      "taskCount": 1
+    }],
+    "logsPolicy": {
+      "destination": "CLOUD_LOGGING"
+    }
+  }

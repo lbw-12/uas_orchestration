@@ -1,0 +1,79 @@
+#!/bin/bash
+#SBATCH -J "plottile_ir_{{ om }}_{{ sensor_type }}_{{ date }}"
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task={{ resources.cpus }}
+#SBATCH --mem={{ resources.memory }}
+#SBATCH --time={{ resources.time }}
+#SBATCH -A PAS2699
+#SBATCH -o "{{ log_dir }}/%j-{{ job_title }}-plottiles.txt"
+#SBATCH --error="{{ log_dir }}/%j-{{ job_title }}-plottiles.err"
+
+
+source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
+conda activate harvest
+
+# This tells GDAL to use a more robust file access method, which can
+# solve both Bus errors and Parameterization errors.
+export GDAL_DISABLE_READDIR_ON_OPEN=EMPTY_DIR
+
+echo "Running plot tile extraction for IR: {{ job_title }}"
+
+num_cores=$(nproc)
+echo Number of cores: $num_cores
+
+job_name="{{ job_title }}"
+
+start_time=$(date +%s)
+
+python -u "{{ python_script }}" \
+    --csv_folder_path "{{ csv_folder_path }}" \
+    --image_folder_path "{{ output_path_ir }}" \
+    --shapefile_path1 "{{ shapefile_path1 }}" \
+    --shapefile_path2 "{{ shapefile_path2 }}" \
+    --output_path1 "{{ output_path_plottiles }}" \
+    --output_path2 "{{ output_path_plottiles }}" \
+    --crop1 "{{ crop1 }}" \
+    --crop2 "{{ crop2 }}" \
+    --location "{{ om }}" \
+    --date "{{ date }}" \
+    --plotimage_source "{{ plotimage_source }}"
+
+end_time=$(date +%s)
+execution_time=$((end_time - start_time))
+
+processing_step="plottile"
+
+echo "finding combined area of plot polygons"
+
+# Initialize variables to 0 to prevent errors if the python script returns nothing
+plot_area_corn_m2=0
+plot_area_soy_m2=0
+
+# Only run the python script if the shapefile path is not an empty string
+if [ -n "{{ shapefile_path_corn }}" ]; then
+    plot_area_corn_m2=$(python -u ../utils/get_plot_area.py "{{ shapefile_path_corn }}")
+fi
+
+if [ -n "{{ shapefile_path_soy }}" ]; then
+    plot_area_soy_m2=$(python -u ../utils/get_plot_area.py "{{ shapefile_path_soy }}")
+fi
+# Use parameter expansion to default to 0 if a variable is empty or unset
+plot_area_total_m2=$(echo "${plot_area_corn_m2:-0} + ${plot_area_soy_m2:-0}" | bc)
+
+log_dir={{logdir_perf}}
+log_file="$log_dir/execution_times_plottile.csv"
+
+# Check if the log file exists
+if [ ! -f "$log_file" ]; then
+  # File doesn't exist, so write the header
+  echo "job_id,job_name,processing_step,num_cores,memory,start_time,end_time,execution_time,plot_area_total_m2,output_size" > "$log_file"
+fi
+
+# Get the size of the output folder
+output_size=$(du -sh "{{ output_path_plottiles }}" | awk '{print $1}')
+
+# Append the data
+echo "$SLURM_JOB_ID,$job_name,$processing_step,$num_cores,$SLURM_MEM_PER_NODE,$start_time,$end_time,$execution_time,$plot_area_total_m2,$output_size" >> "$log_file"
+
+echo "All jobs are done, total time of execution: $execution_time seconds"

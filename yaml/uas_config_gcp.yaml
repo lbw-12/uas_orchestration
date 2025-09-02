@@ -1,0 +1,234 @@
+# Paths
+# This is the base folder that the other paths are relative to
+platform: 'gcp'
+base_folder: 'gs://data-uas/2025_poc/'
+gcp_project_id: 'uas-orchestration-engine'
+
+# These folders are relative to the base folder
+om_folder: 'orthomosaics/initial/'
+om_aligned_folder: 'orthomosaics/aligned/'
+processing_folder: 'processing/'
+
+# The plot tiles folder should have 4 subfolders in the form 'plottiles_{sensor}_{source}' where source = 'om' or 'ir' and sensor = 'rgb' or 'ms'
+# The plot tiles in each subfolder should be named in the form '{om}_{source}_{sensor}_{plot}.tif'
+# Suppose config is your loaded YAML dictionary, fmt_str = config['plottiles_format']
+# This can set the filename: filename = fmt_str.format(om=om, source=source, sensor=sensor, plot=plot)
+plottiles_folder: 'plottiles/'
+plottiles_format: '{om}_{source}_{crop}_{sensor}_{plot_no}_{band}_{date}'
+
+# this is for the points for template matching
+shapefiles_alignment: 'shapefiles/alignment/'
+shapefiles_alignment_format: '{om}_pts/{om}_pts.shp'
+# The DGR and IR folder is located in each flight folder
+#dgr_folder: 'DGR/'
+#ir_folder: 'IR/'
+
+
+# Map tiles and geojson folder
+maptiles_folder: '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2025/'
+maptiles_base_folder: '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/'
+
+patches_folder: 'plot_patches/'
+model_inference_folder: 'model_inference/'
+
+
+# Flight list dictionary in the form [flight][orthomosaic][boundary shapefile] where flight and orthomosaic are required and boundary can be empty.
+
+flight_list:
+  wooster_replant:
+    wooster_replant:
+      []
+  
+
+# Publishing folders
+publishing_folder:
+  wooster_replant:
+    'gs://data-uas/2025_poc/published/2025/'
+    
+# Elevation map folder
+elevation_base_folder: 'gs://data-uas/2025_poc/elevation_tiles/'
+
+elevation_flight_folders:
+  wooster_replant: 
+    folder: 'wooster/'
+    geoid_height: -33.71
+
+
+# List of plot shapefiles relative locations with respect to the base folder, it is a nested dictionary in the form [orthomosaic][crop]
+# 'cc' = corn after corn, 'sc' = corn after soybean rotation
+plot_shapefiles:
+  wooster_replant:
+    soy:
+      'shapefiles/plots/wooster_replant/wooster_replant.shp'
+    
+# Sensors
+sensor_dict:
+  rgb: 'sony'
+  ms: 'altum'
+
+#Processing scripts
+orchestrate: 'uas_pipeline/orchestration/orchestrate.py'
+uas_pipeline:
+  step1:
+    shell_script_template: 'shell_scripts/templates2/1_sbatch_om.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/1_sbatches_om'
+    python_script: '' # ODM orthomosaic creation
+    log_folder: 'logs_om'
+    sensor: ['rgb', 'ms']
+    step_dependency: []
+    date_dependency: 'none'
+    validation: 'om_validation'
+    model_path: ''
+    output_folder: 'orthomosaics/initial/'
+    output_file: '{om}_{sensor_type}_{date}.tif'
+    resources: 
+      cpus: 'all'
+      memory: '0'
+      time: '10:00:00'
+      gpu: false
+
+  step2:
+    shell_script_template: 'shell_scripts/templates2/2_sbatch_omalign.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/2_sbatches_omalign'
+    python_script: 'om_alignment.py' # Orthomosaic alignment
+    log_folder: 'logs_omalign'
+    sensor: ['rgb', 'ms']
+    step_dependency: ['step1']
+    date_dependency: 'previous'
+    validation: 'omalign_validation'
+    model_path: ''
+    output_folder: 'orthomosaics/aligned/'
+    output_file: '{om}_{sensor_type}_{date}_aligned.tif'
+    shapefiles_alignment_folder: 'shapefiles/alignment/'
+    shapefiles_alignment_format: '{om}_pts/{om}_pts.shp'
+    resources:
+      cpus: 'all'
+      memory: '500G'
+      time: '1:00:00'
+      partition: 'largemem'
+      gpu: false
+  step3:
+    shell_script_template: 'shell_scripts/templates2/3_sbatch_plottile_om.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/3_sbatches_plot_tiles_om'
+    python_script: 'plot_tiles_ir_om.py' # Plot tile creation
+    log_folder: 'logs_plot_tiles'
+    sensor: ['rgb', 'ms']
+    step_dependency: ['step2']
+    date_dependency: 'none'
+    validation: 'plottiles_validation'
+    model_path: ''
+    source: 'om'
+    output_folder: 'plottiles/plot_tiles_{sensor_type}_{source}/{om}_{sensor_type}_{date}/'
+    output_file: '{om}_{source}_{crop}_{sensor}_{plot_no}_{band}_{date}.tif'
+    resources:
+      cpus: 6
+      memory: '0'    # Using '0' to request all memory on the node
+      time: '00:20:00'
+      gpu: false
+  step7:
+    shell_script_template: 'shell_scripts/templates2/7_sbatch_plot_to_patch_om.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/7_sbatches_plot_to_patch_om'
+    python_script: 'plot_tiles_to_patches.py'
+    log_folder: 'logs_plot_to_patch' 
+    sensor: ['rgb']
+    step_dependency: ['step3']
+    date_dependency: 'none'
+    validation: 'plot_patches_validation'
+    model_path: ''
+    source: 'om'
+    output_folder: 'plot_patches/{om}_{source}_{sensor_type}_{date}/'
+    output_file: '{om}_{source}_{crop}_{sensor_type}_{plot_no}_{date}_{patch_no}.tif'
+    resources:
+      cpus: 4
+      memory: '48G'
+      time: '00:30:00'
+      gpu: false
+  step9:
+    shell_script_template: 'shell_scripts/templates2/9_sbatch_inf_gs_om.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/9_sbatches_inf_gs_om'
+    python_script: 'inference_growth_stage.py'
+    log_folder: 'logs_inf_gs' 
+    sensor: ['rgb']
+    step_dependency: ['step7']
+    date_dependency: 'none'
+    validation: 'inf_gs_validation'
+    model_path: '/fs/ess/PAS2699/nitrogen/models/growth_stage/gs_vit_model.pth'
+    source: 'om'
+    output_folder: 'inference_om/'
+    output_file: 'inf_gs_{om}_{source}_{date}.json'
+    resources:
+      cpus: 4
+      memory: '300G'
+      time: '00:20:00'
+      gpu: true
+  step10:
+    shell_script_template: 'shell_scripts/templates2/10_sbatch_inf_cc_om.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/10_sbatches_inf_cc_om'
+    python_script: 'inference_canopy_cover.py'
+    log_folder: 'logs_inf_cc'
+    sensor: ['rgb']
+    step_dependency: ['step3']
+    date_dependency: 'none'
+    validation: 'inf_cc_validation'
+    model_path: '/fs/ess/PAS2699/nitrogen/models/canopy_coverage/cc_kmeans_model.pkl'
+    source: 'om'
+    output_folder: 'inference_om/'
+    output_file: 'inf_cc_{om}_{source}_{date}.json'
+    resources:
+      cpus: 4
+      memory: '100G'
+      time: '00:20:00'
+      gpu: false # This step does not require a GPU
+  step11:
+    shell_script_template: 'shell_scripts/templates2/11_sbatch_inf_sr_om.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/11_sbatches_inf_sr_om' 
+    python_script: 'inference_spectral_reflectance.py'
+    log_folder: 'logs_inf_sr'
+    sensor: ['ms']
+    step_dependency: ['step3']
+    date_dependency: 'none'
+    validation: 'inf_sr_validation'
+    model_path: '/fs/ess/PAS2699/nitrogen/models/spectral_reflectance/sr_rf_classifier_model.pkl'
+    source: 'om'
+    output_folder: 'inference_om/'
+    output_file: 'inf_sr_{om}_{source}_{date}.json'
+    resources:
+      cpus: 4
+      memory: '100G'
+      time: '00:20:00'
+      gpu: false
+  step14:
+    shell_script_template: 'shell_scripts/templates2/14_sbatch_process_geojson.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/14_sbatches_process_geojson' 
+    python_script: 'process_geojson.py'
+    log_folder: 'logs_geojson'
+    sensor: ['rgb', 'ms']
+    step_dependency: ['step9', 'step10', 'step11']
+    date_dependency: 'none'
+    validation: 'process_geojson_validation'
+    model_path: ''
+    output_folder: '{year}/{om}/{date}/'
+    output_file: '{om}_{date}.geojson'
+    resources:
+      cpus: 4
+      memory: '100G'
+      time: '05:00:00'
+      partition: 'cpu'
+      gpu: false 
+  step15:
+    shell_script_template: 'shell_scripts/templates2/15_sbatch_maptiles.sh.j2'
+    shell_script_folder: 'shell_scripts/generated/15_sbatches_maptiles'
+    python_script: '' # gdal2tiles.py maptiles creation
+    log_folder: 'logs_maptiles'
+    sensor: ['rgb']
+    step_dependency: ['step2']
+    date_dependency: 'none'
+    validation: 'maptiles_validation'
+    model_path: ''
+    output_folder: '' # This is configured in the publishing section
+    output_file: ''
+    resources:
+      cpus: 12
+      memory: '32GB'
+      time: '01:00:00'
+      gpu: false 

@@ -1,0 +1,54 @@
+#!/bin/bash
+#SBATCH -J "sr_om_{{job_title}}"
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --output={{ log_dir }}/%j-{{job_title}}-inf_sr.txt
+#SBATCH --error={{ log_dir }}/%j-{{job_title}}-inf_sr.err
+#SBATCH --time=00:20:00
+#SBATCH --mem=100G
+#SBATCH -A PAS2699
+
+source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
+conda activate harvest
+
+echo "Running spectral reflectance inference for: {{ job_title }}"
+
+num_cores=$(nproc)
+echo Number of cores: $num_cores
+
+job_name="{{ job_title }}"
+
+start_time=$(date +%s)
+
+python -u "{{ python_script }}" \
+    --input_dir "{{ sr_input_dir }}" \
+    --output_dir "{{ output_path_sr }}" \
+    --output_json "{{ output_path_sr_json }}" \
+    --model_path "{{ model_path }}" \
+    --field "{{ om }}" \
+    --plotimage_source "{{ plotimage_source }}" \
+    --date "{{ date }}"
+
+
+end_time=$(date +%s)
+execution_time=$((end_time - start_time))
+
+processing_step="spectral_reflectance_inference"
+
+log_dir={{logdir_perf}}
+log_file="$log_dir/execution_times_spectral_reflectance.csv"
+
+# Get the size of the output folder
+output_size=$(du -sh "{{ output_folder }}" | awk '{print $1}')
+
+# Check if the log file exists
+if [ ! -f "$log_file" ]; then
+  # File doesn't exist, so write the header
+  echo "job_id,job_name,processing_step,num_cores,memory,start_time,end_time,execution_time,output_size" > "$log_file"
+fi
+
+# Append the data
+echo "$SLURM_JOB_ID,$job_name,$processing_step,$num_cores,$SLURM_MEM_PER_NODE,$start_time,$end_time,$execution_time,$output_size" >> "$log_file"
+
+echo "All jobs are done, total time of execution: $execution_time seconds"

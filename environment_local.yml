@@ -1,0 +1,34 @@
+name: harvest
+channels:
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
+dependencies:
+  - python=3.9
+  - pytorch
+  - pytorch-gpu
+  - torchaudio
+  - torchvision
+  - geopandas
+  - pandas
+  - rasterio
+  - numpy
+  - pillow
+  - pyyaml
+  - timm
+  - tqdm
+  - colorspacious
+  - jinja2
+  - joblib
+  - matplotlib
+  - opencv
+  - scikit-image
+  - scikit-learn=1.0.2
+  - shapely
+  - tensorboard
+  - gdal
+  - seaborn
+  - pyshp
+  - ipykernel
+  - watchdog
+  - google-cloud-batch
+prefix: /fs/ess/PAS2699/envs/miniconda3/envs/harvest

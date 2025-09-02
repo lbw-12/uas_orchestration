@@ -1,0 +1,1485 @@
+{
+    "douglass_jeremiah": {
+        "douglass_jeremiahnorth": {
+            "ms": {
+                "20250603": {},
+                "20250612": {},
+                "20250620": {},
+                "20250627": {},
+                "20250703": {}
+            },
+            "rgb": {
+                "20250603": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250603-Douglass/20250603_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250603_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250612": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250612-Douglass/20250612_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250612_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250620": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250620-Douglass/20250620_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250620_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250627": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250627-Douglass/20250627_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250627_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250703": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250703-Douglass/20250703_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250703_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahnorth/",
+                        "status": "validated"
+                    }
+                }
+            }
+        },
+        "douglass_jeremiahsouth": {
+            "ms": {
+                "20250603": {},
+                "20250612": {},
+                "20250620": {},
+                "20250627": {},
+                "20250703": {}
+            },
+            "rgb": {
+                "20250603": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250603-Douglass/20250603_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250603_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250612": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250612-Douglass/20250612_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250612_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250620": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250620-Douglass/20250620_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250620_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250627": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250627-Douglass/20250627_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250627_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250703": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250703-Douglass/20250703_Douglass_Jeremiah_Sony150 Flight 01/01_Images/20250703_Douglass_Jeremiah_Sony150 Flight 01/OUTPUT_douglass_jeremiahsouth/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    },
+    "douglass_lincoln": {
+        "douglass_lincolnnorth": {
+            "ms": {
+                "20250603": {},
+                "20250612": {},
+                "20250620": {},
+                "20250627": {},
+                "20250703": {}
+            },
+            "rgb": {
+                "20250603": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250603-Douglass/20250603_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250603_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250612": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250612-Douglass/20250612_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250612_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250620": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250620-Douglass/20250620_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250620_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250627": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250627-Douglass/20250627_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250627_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250703": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250703-Douglass/20250703_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250703_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnnorth/",
+                        "status": "validated"
+                    }
+                }
+            }
+        },
+        "douglass_lincolnsouth": {
+            "ms": {
+                "20250603": {},
+                "20250612": {},
+                "20250620": {},
+                "20250627": {},
+                "20250703": {}
+            },
+            "rgb": {
+                "20250603": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250603-Douglass/20250603_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250603_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250612": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250612-Douglass/20250612_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250612_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250620": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250620-Douglass/20250620_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250620_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250627": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250627-Douglass/20250627_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250627_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250703": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250703-Douglass/20250703_Douglass_Lincoln_Sony150 Flight 01/01_Images/20250703_Douglass_Lincoln_Sony150 Flight 01/OUTPUT_douglass_lincolnsouth/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    },
+    "frantom": {
+        "frantom_b89east": {
+            "ms": {
+                "20250515": {},
+                "20250523": {},
+                "20250530": {},
+                "20250604": {},
+                "20250611": {},
+                "20250617": {},
+                "20250624": {},
+                "20250701": {},
+                "20250707": {}
+            },
+            "rgb": {
+                "20250515": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250515-Frantom/20250515_Frantom_Sony150 Flight 01/01_Images/20250515_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "complete"
+                    }
+                },
+                "20250523": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250523-Frantom/20250523_Frantom_Sony150 Flight 01/01_Images/20250523_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "complete"
+                    }
+                },
+                "20250530": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250530-Frantom/20250530_Frantom_Sony150 Flight 01/01_Images/20250530_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "complete"
+                    }
+                },
+                "20250604": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250604-Frantom/20250604_Frantom_Sony150 Flight 01/01_Images/20250604_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "complete"
+                    }
+                },
+                "20250611": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250611-Frantom/20250611_Frantom_Sony150 Flight 01/01_Images/20250611_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "complete"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Frantom/20250617_Frantom_Sony150 Flight 01/01_Images/20250617_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "complete"
+                    }
+                },
+                "20250624": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250624-Frantom/20250624_Frantom_Sony150 Flight 01/01_Images/20250624_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Frantom/20250701_Frantom_Sony150 Flight 01/01_Images/20250701_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "complete"
+                    }
+                },
+                "20250707": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250707-Frantom/20250707_Frantom_Sony150 Flight 01/01_Images/20250707_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89east/",
+                        "status": "validated"
+                    }
+                }
+            }
+        },
+        "frantom_b89west": {
+            "ms": {
+                "20250515": {},
+                "20250523": {},
+                "20250530": {},
+                "20250604": {},
+                "20250611": {},
+                "20250617": {},
+                "20250624": {},
+                "20250701": {},
+                "20250707": {}
+            },
+            "rgb": {
+                "20250515": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250515-Frantom/20250515_Frantom_Sony150 Flight 01/01_Images/20250515_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "complete"
+                    }
+                },
+                "20250523": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250523-Frantom/20250523_Frantom_Sony150 Flight 01/01_Images/20250523_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "complete"
+                    }
+                },
+                "20250530": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250530-Frantom/20250530_Frantom_Sony150 Flight 01/01_Images/20250530_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "complete"
+                    }
+                },
+                "20250604": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250604-Frantom/20250604_Frantom_Sony150 Flight 01/01_Images/20250604_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "complete"
+                    }
+                },
+                "20250611": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250611-Frantom/20250611_Frantom_Sony150 Flight 01/01_Images/20250611_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "complete"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Frantom/20250617_Frantom_Sony150 Flight 01/01_Images/20250617_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "complete"
+                    }
+                },
+                "20250624": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250624-Frantom/20250624_Frantom_Sony150 Flight 01/01_Images/20250624_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Frantom/20250701_Frantom_Sony150 Flight 01/01_Images/20250701_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "complete"
+                    }
+                },
+                "20250707": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250707-Frantom/20250707_Frantom_Sony150 Flight 01/01_Images/20250707_Frantom_Sony150 Flight 01/OUTPUT_frantom_b89west/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    },
+    "fsr_nitrogen": {
+        "fsr_nitrogennorth": {
+            "rgb": {
+                "20250604": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250604-FSR/20250604_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250604_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogennorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250610": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250610-FSR/20250610_FSR_Nitrogen_Sony150_copy Flight 01/01_Images/20250610_FSR_Nitrogen_Sony150_copy Flight 01/OUTPUT_fsr_nitrogennorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250618": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250618-FSR/20250618_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250618_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogennorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250625": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250625-FSR/20250625_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250625_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogennorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250702": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250702-FSR/20250702_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250702_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogennorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250708": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250708-FSR/20250708_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250708_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogennorth/",
+                        "status": "validated"
+                    }
+                }
+            },
+            "ms": {
+                "20250610": {},
+                "20250618": {},
+                "20250625": {},
+                "20250702": {},
+                "20250708": {}
+            }
+        },
+        "fsr_nitrogensouth": {
+            "rgb": {
+                "20250604": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250604-FSR/20250604_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250604_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogensouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250610": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250610-FSR/20250610_FSR_Nitrogen_Sony150_copy Flight 01/01_Images/20250610_FSR_Nitrogen_Sony150_copy Flight 01/OUTPUT_fsr_nitrogensouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250618": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250618-FSR/20250618_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250618_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogensouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250625": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250625-FSR/20250625_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250625_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogensouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250702": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250702-FSR/20250702_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250702_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogensouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250708": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250708-FSR/20250708_FSR_Nitrogen_Sony150 Flight 01/01_Images/20250708_FSR_Nitrogen_Sony150 Flight 01/OUTPUT_fsr_nitrogensouth/",
+                        "status": "validated"
+                    }
+                }
+            },
+            "ms": {
+                "20250610": {},
+                "20250618": {},
+                "20250625": {},
+                "20250702": {},
+                "20250708": {}
+            }
+        }
+    },
+    "fsr_replant": {
+        "fsr_replanteast": {
+            "ms": {
+                "20250604": {},
+                "20250610": {},
+                "20250618": {},
+                "20250625": {},
+                "20250702": {},
+                "20250708": {}
+            },
+            "rgb": {
+                "20250604": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250604-FSR/20250604_FSR_Replant_Sony150 Flight 01/01_Images/20250604_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replanteast/",
+                        "status": "validated"
+                    }
+                },
+                "20250610": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250610-FSR/20250610_FSR_Replant_Sony150 Flight 01/01_Images/20250610_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replanteast/",
+                        "status": "validated"
+                    }
+                },
+                "20250618": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250618-FSR/20250618_FSR_Replant_Sony150 Flight 01/01_Images/20250618_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replanteast/",
+                        "status": "validated"
+                    }
+                },
+                "20250625": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250625-FSR/20250625_FSR_Replant_Sony150 Flight 01/01_Images/20250625_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replanteast/",
+                        "status": "validated"
+                    }
+                },
+                "20250702": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250702-FSR/20250702_FSR_Replant_Sony150 Flight 01/01_Images/20250702_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replanteast/",
+                        "status": "validated"
+                    }
+                }
+            }
+        },
+        "fsr_replantwest": {
+            "ms": {
+                "20250604": {},
+                "20250610": {},
+                "20250618": {},
+                "20250625": {},
+                "20250702": {},
+                "20250708": {}
+            },
+            "rgb": {
+                "20250604": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250604-FSR/20250604_FSR_Replant_Sony150 Flight 01/01_Images/20250604_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replantwest/",
+                        "status": "validated"
+                    }
+                },
+                "20250610": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250610-FSR/20250610_FSR_Replant_Sony150 Flight 01/01_Images/20250610_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replantwest/",
+                        "status": "validated"
+                    }
+                },
+                "20250618": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250618-FSR/20250618_FSR_Replant_Sony150 Flight 01/01_Images/20250618_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replantwest/",
+                        "status": "validated"
+                    }
+                },
+                "20250625": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250625-FSR/20250625_FSR_Replant_Sony150 Flight 01/01_Images/20250625_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replantwest/",
+                        "status": "validated"
+                    }
+                },
+                "20250702": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250702-FSR/20250702_FSR_Replant_Sony150 Flight 01/01_Images/20250702_FSR_Replant_Sony150 Flight 01/OUTPUT_fsr_replantwest/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    },
+    "hoelsher": {
+        "hoelshereast": {
+            "ms": {
+                "20250530": {},
+                "20250609": {},
+                "20250616": {},
+                "20250623": {},
+                "20250630": {}
+            },
+            "rgb": {
+                "20250530": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250530-Hoelsher/20250530_Hoelsher_Sony150 Flight 01/01_Images/20250530_Hoelsher_Sony150 Flight 01/OUTPUT_hoelshereast/",
+                        "status": "validated"
+                    }
+                },
+                "20250609": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250609-Hoelsher/20250609_Hoelsher_Sony150 Flight 01/01_Images/20250609_Hoelsher_Sony150 Flight 01/OUTPUT_hoelshereast/",
+                        "status": "validated"
+                    }
+                },
+                "20250616": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250616-Hoelsher/20250616_Hoelsher_Sony150_copy Flight 01/01_Images/20250616_Hoelsher_Sony150_copy Flight 01/OUTPUT_hoelshereast/",
+                        "status": "validated"
+                    }
+                },
+                "20250623": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250623-Hoelsher/20250623_Hoelsher_Sony150 Flight 01/01_Images/20250623_Hoelsher_Sony150 Flight 01/OUTPUT_hoelshereast/",
+                        "status": "validated"
+                    }
+                },
+                "20250630": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250630-Hoelsher/20250630_Hoelsher_Sony150_copy Flight 01/01_Images/20250630_Hoelsher_Sony150_copy Flight 01/OUTPUT_hoelshereast/",
+                        "status": "validated"
+                    }
+                }
+            }
+        },
+        "hoelsherwest": {
+            "ms": {
+                "20250530": {},
+                "20250609": {},
+                "20250616": {},
+                "20250623": {},
+                "20250630": {}
+            },
+            "rgb": {
+                "20250530": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250530-Hoelsher/20250530_Hoelsher_Sony150 Flight 01/01_Images/20250530_Hoelsher_Sony150 Flight 01/OUTPUT_hoelsherwest/",
+                        "status": "validated"
+                    }
+                },
+                "20250609": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250609-Hoelsher/20250609_Hoelsher_Sony150 Flight 01/01_Images/20250609_Hoelsher_Sony150 Flight 01/OUTPUT_hoelsherwest/",
+                        "status": "validated"
+                    }
+                },
+                "20250616": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250616-Hoelsher/20250616_Hoelsher_Sony150_copy Flight 01/01_Images/20250616_Hoelsher_Sony150_copy Flight 01/OUTPUT_hoelsherwest/",
+                        "status": "validated"
+                    }
+                },
+                "20250623": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250623-Hoelsher/20250623_Hoelsher_Sony150 Flight 01/01_Images/20250623_Hoelsher_Sony150 Flight 01/OUTPUT_hoelsherwest/",
+                        "status": "validated"
+                    }
+                },
+                "20250630": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250630-Hoelsher/20250630_Hoelsher_Sony150_copy Flight 01/01_Images/20250630_Hoelsher_Sony150_copy Flight 01/OUTPUT_hoelsherwest/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    },
+    "kuntz": {
+        "kuntz_springhillnorth": {
+            "ms": {
+                "20250507": {},
+                "20250512": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250609": {},
+                "20250617": {},
+                "20250623": {},
+                "20250630": {},
+                "20250707": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Kuntz/20250507_KuntzSpringhill_Sony150 Flight 01/01_Images/20250507_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250512": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250512-Kuntz/20250512_KuntzSpringhill_Sony150 Flight 01/01_Images/20250512_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Kuntz/20250519_KuntzSpringhill_Sony150 Flight 01/01_Images/20250519_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Kuntz/20250526_KuntzSpringhill_Sony150 Flight 01/01_Images/20250526_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Kuntz/20250602_KuntzSpringhill_Sony150 Flight 01/01_Images/20250602_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250609": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250609-Kuntz/20250609_KuntzSpringhill_Sony150 Flight 01/01_Images/20250609_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Kuntz/20250617_KuntzSpringhill_Sony150 Flight 01/01_Images/20250617_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250623": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250623-Kuntz/20250623_KuntzSpringhill_Sony150 Flight 01/01_Images/20250623_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250630": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250630-Kuntz/20250630_KuntzSpringhill_Sony150 Flight 01/01_Images/20250630_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                },
+                "20250707": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250707-Kuntz/20250707_KuntzSpringhill_Sony150 Flight 01/01_Images/20250707_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillnorth/",
+                        "status": "validated"
+                    }
+                }
+            }
+        },
+        "kuntz_springhillsouth": {
+            "ms": {
+                "20250507": {},
+                "20250512": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250609": {},
+                "20250617": {},
+                "20250623": {},
+                "20250630": {},
+                "20250707": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Kuntz/20250507_KuntzSpringhill_Sony150 Flight 01/01_Images/20250507_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250512": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250512-Kuntz/20250512_KuntzSpringhill_Sony150 Flight 01/01_Images/20250512_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Kuntz/20250519_KuntzSpringhill_Sony150 Flight 01/01_Images/20250519_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Kuntz/20250526_KuntzSpringhill_Sony150 Flight 01/01_Images/20250526_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Kuntz/20250602_KuntzSpringhill_Sony150 Flight 01/01_Images/20250602_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250609": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250609-Kuntz/20250609_KuntzSpringhill_Sony150 Flight 01/01_Images/20250609_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Kuntz/20250617_KuntzSpringhill_Sony150 Flight 01/01_Images/20250617_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250623": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250623-Kuntz/20250623_KuntzSpringhill_Sony150 Flight 01/01_Images/20250623_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250630": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250630-Kuntz/20250630_KuntzSpringhill_Sony150 Flight 01/01_Images/20250630_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                },
+                "20250707": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250707-Kuntz/20250707_KuntzSpringhill_Sony150 Flight 01/01_Images/20250707_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhillsouth/",
+                        "status": "validated"
+                    }
+                }
+            }
+        },
+        "kuntz_springhilleast": {
+            "ms": {
+                "20250507": {},
+                "20250512": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250609": {},
+                "20250617": {},
+                "20250623": {},
+                "20250630": {},
+                "20250707": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Kuntz/20250507_KuntzSpringhill_Sony150 Flight 01/01_Images/20250507_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250512": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250512-Kuntz/20250512_KuntzSpringhill_Sony150 Flight 01/01_Images/20250512_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Kuntz/20250519_KuntzSpringhill_Sony150 Flight 01/01_Images/20250519_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Kuntz/20250526_KuntzSpringhill_Sony150 Flight 01/01_Images/20250526_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Kuntz/20250602_KuntzSpringhill_Sony150 Flight 01/01_Images/20250602_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250609": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250609-Kuntz/20250609_KuntzSpringhill_Sony150 Flight 01/01_Images/20250609_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Kuntz/20250617_KuntzSpringhill_Sony150 Flight 01/01_Images/20250617_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250623": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250623-Kuntz/20250623_KuntzSpringhill_Sony150 Flight 01/01_Images/20250623_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250630": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250630-Kuntz/20250630_KuntzSpringhill_Sony150 Flight 01/01_Images/20250630_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                },
+                "20250707": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250707-Kuntz/20250707_KuntzSpringhill_Sony150 Flight 01/01_Images/20250707_KuntzSpringhill_Sony150 Flight 01/OUTPUT_kuntz_springhilleast/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    },
+    "northwest": {
+        "northwest_bftb": {
+            "ms": {
+                "20250507": {},
+                "20250512": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250609": {},
+                "20250616": {},
+                "20250623": {},
+                "20250701": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Northwest/20250507_Northwest_sony150 Flight 01/01_Images/20250507_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250512": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250512-Northwest/20250512_Northwest_sony150 Flight 01/01_Images/20250512_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Northwest/20250519_Northwest_sony150 Flight 01/01_Images/20250519_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Northwest/20250526_Northwest_sony150 Flight 01/01_Images/20250526_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Northwest/20250602_Northwest_sony150 Flight 01/01_Images/20250602_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250609": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250609-Northwest/20250609_Northwest_sony150 Flight 01/01_Images/20250609_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250616": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250616-Northwest/20250616_Northwest_sony150 Flight 01/01_Images/20250616_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250623": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250623-Northwest/20250623_Northwest_sony150 Flight 01/01_Images/20250623_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Northwest/20250701_Northwest_sony150 Flight 01/01_Images/20250701_Northwest_sony150 Flight 01/OUTPUT_northwest_bftb/",
+                        "status": "complete"
+                    }
+                }
+            }
+        },
+        "northwest_n": {
+            "ms": {
+                "20250507": {},
+                "20250512": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250609": {},
+                "20250616": {},
+                "20250623": {},
+                "20250701": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Northwest/20250507_Northwest_sony150 Flight 01/01_Images/20250507_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                },
+                "20250512": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250512-Northwest/20250512_Northwest_sony150 Flight 01/01_Images/20250512_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Northwest/20250519_Northwest_sony150 Flight 01/01_Images/20250519_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Northwest/20250526_Northwest_sony150 Flight 01/01_Images/20250526_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Northwest/20250602_Northwest_sony150 Flight 01/01_Images/20250602_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                },
+                "20250609": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250609-Northwest/20250609_Northwest_sony150 Flight 01/01_Images/20250609_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                },
+                "20250616": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250616-Northwest/20250616_Northwest_sony150 Flight 01/01_Images/20250616_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                },
+                "20250623": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250623-Northwest/20250623_Northwest_sony150 Flight 01/01_Images/20250623_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Northwest/20250701_Northwest_sony150 Flight 01/01_Images/20250701_Northwest_sony150 Flight 01/OUTPUT_northwest_n/",
+                        "status": "complete"
+                    }
+                }
+            }
+        },
+        "northwest_replant": {
+            "ms": {
+                "20250507": {},
+                "20250512": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250609": {},
+                "20250616": {},
+                "20250623": {},
+                "20250701": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Northwest/20250507_Northwest_sony150 Flight 01/01_Images/20250507_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250512": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250512-Northwest/20250512_Northwest_sony150 Flight 01/01_Images/20250512_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Northwest/20250519_Northwest_sony150 Flight 01/01_Images/20250519_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Northwest/20250526_Northwest_sony150 Flight 01/01_Images/20250526_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Northwest/20250602_Northwest_sony150 Flight 01/01_Images/20250602_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250609": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250609-Northwest/20250609_Northwest_sony150 Flight 01/01_Images/20250609_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250616": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250616-Northwest/20250616_Northwest_sony150 Flight 01/01_Images/20250616_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250623": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250623-Northwest/20250623_Northwest_sony150 Flight 01/01_Images/20250623_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Northwest/20250701_Northwest_sony150 Flight 01/01_Images/20250701_Northwest_sony150 Flight 01/OUTPUT_northwest_replant/",
+                        "status": "complete"
+                    }
+                }
+            }
+        }
+    },
+    "western": {
+        "western_bftb": {
+            "ms": {
+                "20250507": {},
+                "20250515": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250611": {},
+                "20250617": {},
+                "20250624": {},
+                "20250701": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Western/20250507_Western_Sony150 Flight 01/01_Images/20250507_Western_Sony150 Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250515": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250515-Western/20250515_Western_Sony150 Flight 01/01_Images/20250515_Western_Sony150 Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Western/20250519_Western_Sony150 Flight 01/01_Images/20250519_Western_Sony150 Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Western/20250526_Western_Sony150 Flight 01/01_Images/20250526_Western_Sony150 Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Western/20250602_Western_Sony150 Flight 01/01_Images/20250602_Western_Sony150 Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250611": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250611-Western/20250611_Western_Sony150_copy Flight 01/01_Images/20250611_Western_Sony150_copy Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Western/20250617_Western_Sony150 Flight 01/01_Images/20250617_Western_Sony150 Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250624": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250624-Western/20250624_Western_Sony150 Flight 01/01_Images/20250624_Western_Sony150 Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Western/20250701_Western_Sony150 Flight 01/01_Images/20250701_Western_Sony150 Flight 01/OUTPUT_western_bftb/",
+                        "status": "complete"
+                    }
+                }
+            }
+        },
+        "western_ncc": {
+            "ms": {
+                "20250507": {},
+                "20250515": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250611": {},
+                "20250617": {},
+                "20250624": {},
+                "20250701": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Western/20250507_Western_Sony150 Flight 01/01_Images/20250507_Western_Sony150 Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                },
+                "20250515": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250515-Western/20250515_Western_Sony150 Flight 01/01_Images/20250515_Western_Sony150 Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Western/20250519_Western_Sony150 Flight 01/01_Images/20250519_Western_Sony150 Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Western/20250526_Western_Sony150 Flight 01/01_Images/20250526_Western_Sony150 Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Western/20250602_Western_Sony150 Flight 01/01_Images/20250602_Western_Sony150 Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                },
+                "20250611": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250611-Western/20250611_Western_Sony150_copy Flight 01/01_Images/20250611_Western_Sony150_copy Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Western/20250617_Western_Sony150 Flight 01/01_Images/20250617_Western_Sony150 Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                },
+                "20250624": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250624-Western/20250624_Western_Sony150 Flight 01/01_Images/20250624_Western_Sony150 Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Western/20250701_Western_Sony150 Flight 01/01_Images/20250701_Western_Sony150 Flight 01/OUTPUT_western_ncc/",
+                        "status": "complete"
+                    }
+                }
+            }
+        },
+        "western_nsc": {
+            "ms": {
+                "20250507": {},
+                "20250515": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250611": {},
+                "20250617": {},
+                "20250624": {},
+                "20250701": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Western/20250507_Western_Sony150 Flight 01/01_Images/20250507_Western_Sony150 Flight 01/OUTPUT_western_nsc/",
+                        "status": "error: 39 csv_rows != 36 images"
+                    }
+                },
+                "20250515": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250515-Western/20250515_Western_Sony150 Flight 01/01_Images/20250515_Western_Sony150 Flight 01/OUTPUT_western_nsc/",
+                        "status": "error: 40 csv_rows != 37 images"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Western/20250519_Western_Sony150 Flight 01/01_Images/20250519_Western_Sony150 Flight 01/OUTPUT_western_nsc/",
+                        "status": "error: 39 csv_rows != 37 images"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Western/20250526_Western_Sony150 Flight 01/01_Images/20250526_Western_Sony150 Flight 01/OUTPUT_western_nsc/",
+                        "status": "complete"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Western/20250602_Western_Sony150 Flight 01/01_Images/20250602_Western_Sony150 Flight 01/OUTPUT_western_nsc/",
+                        "status": "error: 39 csv_rows != 36 images"
+                    }
+                },
+                "20250611": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250611-Western/20250611_Western_Sony150_copy Flight 01/01_Images/20250611_Western_Sony150_copy Flight 01/OUTPUT_western_nsc/",
+                        "status": "error: 39 csv_rows != 36 images"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Western/20250617_Western_Sony150 Flight 01/01_Images/20250617_Western_Sony150 Flight 01/OUTPUT_western_nsc/",
+                        "status": "complete"
+                    }
+                },
+                "20250624": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250624-Western/20250624_Western_Sony150 Flight 01/01_Images/20250624_Western_Sony150 Flight 01/OUTPUT_western_nsc/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Western/20250701_Western_Sony150 Flight 01/01_Images/20250701_Western_Sony150 Flight 01/OUTPUT_western_nsc/",
+                        "status": "complete"
+                    }
+                }
+            }
+        },
+        "western_replant": {
+            "ms": {
+                "20250507": {},
+                "20250515": {},
+                "20250519": {},
+                "20250526": {},
+                "20250602": {},
+                "20250611": {},
+                "20250617": {},
+                "20250624": {},
+                "20250701": {}
+            },
+            "rgb": {
+                "20250507": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250507-Western/20250507_Western_Sony150 Flight 01/01_Images/20250507_Western_Sony150 Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250515": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250515-Western/20250515_Western_Sony150 Flight 01/01_Images/20250515_Western_Sony150 Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250519": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250519-Western/20250519_Western_Sony150 Flight 01/01_Images/20250519_Western_Sony150 Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250526": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250526-Western/20250526_Western_Sony150 Flight 01/01_Images/20250526_Western_Sony150 Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250602": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250602-Western/20250602_Western_Sony150 Flight 01/01_Images/20250602_Western_Sony150 Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250611": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250611-Western/20250611_Western_Sony150_copy Flight 01/01_Images/20250611_Western_Sony150_copy Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250617": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250617-Western/20250617_Western_Sony150 Flight 01/01_Images/20250617_Western_Sony150 Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250624": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250624-Western/20250624_Western_Sony150 Flight 01/01_Images/20250624_Western_Sony150 Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                },
+                "20250701": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250701-Western/20250701_Western_Sony150 Flight 01/01_Images/20250701_Western_Sony150 Flight 01/OUTPUT_western_replant/",
+                        "status": "complete"
+                    }
+                }
+            }
+        }
+    },
+    "wooster_nitrogen": {
+        "wooster_nitrogen": {
+            "ms": {
+                "20250702": {},
+                "20250708": {}
+            },
+            "rgb": {
+                "20250702": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250702-Wooster/20250702_Wooster_Nitrogen_Sony150 Flight 01/01_Images/20250702_Wooster_Nitrogen_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                },
+                "20250708": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250708-Wooster/20250708_Wooster_Nitrogen_Sony150 Flight 01/01_Images/20250708_Wooster_Nitrogen_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    },
+    "wooster_bftb": {
+        "wooster_bftb": {
+            "ms": {
+                "20250430": {},
+                "20250508": {},
+                "20250514": {},
+                "20250520": {},
+                "20250529": {},
+                "20250603": {},
+                "20250610": {},
+                "20250618": {},
+                "20250625": {},
+                "20250702": {},
+                "20250708": {}
+            },
+            "rgb": {
+                "20250430": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250430-Wooster/20250430_Wooster_BFTB_Sony150 Flight 01/01_Images/20250430_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250508": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250508-Wooster/20250508_Wooster_BFTB_Sony150 Flight 01/01_Images/20250508_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250514": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250514-Wooster/20250514_Wooster_BFTB_Sony150 Flight 01/01_Images/20250514_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250520": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250520-Wooster/20250520_Wooster_BFTB_Sony150 Flight 01/01_Images/20250520_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250529": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250529-Wooster/20250529_Wooster_BFTB_Sony150 Flight 01/01_Images/20250529_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250603": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250603-Wooster/20250603_Wooster_BFTB_Sony150 Flight 01/01_Images/20250603_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250610": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250610-Wooster/20250610_Wooster_BFTB_Sony150 Flight 01/01_Images/20250610_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250618": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250618-Wooster/20250618_Wooster_BFTB_Sony150 Flight 01/01_Images/20250618_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250625": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250625-Wooster/20250625_Wooster_BFTB_Sony150 Flight 01/01_Images/20250625_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250702": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250702-Wooster/20250702_Wooster_BFTB_Sony150 Flight 01/01_Images/20250702_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250708": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250708-Wooster/20250708_Wooster_BFTB_Sony150 Flight 01/01_Images/20250708_Wooster_BFTB_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    },
+    "wooster_replant": {
+        "wooster_replant": {
+            "ms": {
+                "20250430": {},
+                "20250508": {},
+                "20250514": {},
+                "20250520": {},
+                "20250529": {},
+                "20250603": {},
+                "20250610": {},
+                "20250618": {},
+                "20250625": {},
+                "20250702": {},
+                "20250708": {}
+            },
+            "rgb": {
+                "20250430": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250430-Wooster/20250430_Wooster_Replant_Sony150 Flight 01/01_Images/20250430_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                },
+                "20250508": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250508-Wooster/20250508_Wooster_Replant_Sony150 Flight 01/01_Images/20250508_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                },
+                "20250514": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250514-Wooster/20250514_Wooster_Replant_Sony150 Flight 01/01_Images/20250514_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                },
+                "20250520": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250520-Wooster/20250520_Wooster_Replant_Sony150 Flight 01/01_Images/20250520_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                },
+                "20250529": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250529-Wooster/20250529_Wooster_Replant_Sony150 Flight 01/01_Images/20250529_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                },
+                "20250603": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250603-Wooster/20250603_Wooster_Replant_Sony150 Flight 01/01_Images/20250603_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250610": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250610-Wooster/20250610_Wooster_Replant_Sony150 Flight 01/01_Images/20250610_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250618": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250618-Wooster/20250618_Wooster_Replant_Sony150 Flight 01/01_Images/20250618_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250625": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250625-Wooster/20250625_Wooster_Replant_Sony150 Flight 01/01_Images/20250625_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250702": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250702-Wooster/20250702_Wooster_Replant_Sony150 Flight 01/01_Images/20250702_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "complete"
+                    }
+                },
+                "20250708": {
+                    "step4": {
+                        "input_path": "/fs/ess/PAS2699/nitrogen/data/uas/2025/flights/20250708-Wooster/20250708_Wooster_Replant_Sony150 Flight 01/01_Images/20250708_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "status": "validated"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SSB9TJ7EFD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SSB9TJ7EFD');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aerial AgriViewer - OSU</title>
+
+  <meta name="citation_title" content="Aerial Agri Viewer">
+  <meta name="citation_author" content="Waltz, Lucas">
+  <meta name="citation_author" content="Ghoorkhanian, Armeen">
+  <meta name="citation_author" content="Sridhar, Sarikaa">
+  <meta name="citation_author" content="Machiraju, Raghu">
+  <meta name="citation_author" content="Khanal, Sami">
+  <meta name="citation_publication_date" content="2025/06/13">
+  <meta name="citation_publisher" content="The Ohio State University">
+  <meta name="citation_online_date" content="2025/06/13">
+  <meta name="citation_abstract_html_url" content="https://go.osu.edu/aerialagriviewer_sigspatial2025">
+  <meta name="citation_doi" content="">
+
+  <!-- ICONS -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css" />
+<script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dbeafe 50%, #ecfdf5 100%);
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 1rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, #059669, #10b981);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .brand {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .brand p {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            background: none;
+        }
+
+        .btn-outline {
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+        }
+
+        .btn-outline:hover {
+            background: #f9fafb;
+        }
+
+        .btn-primary {
+            background: #059669;
+            color: white;
+            border: 1px solid #059669;
+        }
+
+        .btn-primary:hover {
+            background: #047857;
+        }
+
+        .btn-sm {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .menu-btn {
+            display: none;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 20rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(34, 197, 94, 0.3);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+
+            height: calc(100vh - 80px);
+            /* hide overflow on the container itself */
+            overflow: hidden;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(34, 197, 94, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sidebar-content {
+            flex: none;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overscroll-behavior: contain;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1rem 1rem 0.75rem;
+            border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #059669;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background: white;
+            font-size: 0.875rem;
+        }
+
+        .field-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .field-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .field-btn:hover {
+            background: #f0fdf4;
+            border-color: #10b981;
+        }
+
+        .field-btn.selected {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+
+        .field-info {
+            text-align: left;
+        }
+
+        .field-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .field-area {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-default {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .badge-secondary {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-destructive {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .badge-outline {
+            background: transparent;
+            border: 1px solid #d1d5db;
+            color: #6b7280;
+        }
+
+        /* Visualization Options */
+        .viz-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .viz-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            background: white;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .viz-btn:hover {
+            background: #f0fdf4;
+            border-color: #10b981;
+        }
+
+        .viz-btn.selected {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+
+        .separator {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 1rem 0;
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .switch {
+            position: relative;
+            width: 2.75rem;
+            height: 1.5rem;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 1.5rem;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 1.125rem;
+            width: 1.125rem;
+            left: 0.1875rem;
+            bottom: 0.1875rem;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .switch-slider {
+            background-color: #059669;
+        }
+
+        input:checked + .switch-slider:before {
+            transform: translateX(1.25rem);
+        }
+
+        /* Analytics */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .metric-card.green {
+            background: #f0fdf4;
+        }
+
+        .metric-card.blue {
+            background: #eff6ff;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .metric-value.green {
+            color: #059669;
+        }
+
+        .metric-value.blue {
+            color: #2563eb;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .progress-container {
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: #e5e7eb;
+            border-radius: 0.25rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #059669;
+            transition: width 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-bar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 1rem;
+        }
+
+        .timeline-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .date-buttons {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .date-btn {
+            flex-shrink: 0;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .date-btn:hover {
+            background: #f0fdf4;
+            border-color: #10b981;
+        }
+
+        .date-btn.selected {
+            background: #059669;
+            color: white;
+            border-color: #059669;
+        }
+
+        /* Map Area */
+
+        /* make the OL container fill its parent */
+        #map-canvas {
+        width: 100%;
+        height: 100%;
+        }
+
+        .map-area {
+            flex: 1;
+            position: relative;
+            background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-placeholder {
+            text-align: center;
+        }
+
+        .map-icon {
+            width: 6rem;
+            height: 6rem;
+            background: #059669;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+
+        .map-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+
+        .map-subtitle {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .weather-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .weather-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Map Controls */
+        .map-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .map-control-btn {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.375rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .map-control-btn:hover {
+            background: white;
+        }
+
+        /* Legend */
+        .legend {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            width: 16rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-item span {
+          white-space: nowrap;
+        }
+
+        .legend-color {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+        }
+
+        .card.collapsed .card-content {
+        display: none;
+        }
+
+        /* style & animate the collapse icon */
+        .collapse-icon {
+        margin-left: auto;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        }
+        .card.collapsed .collapse-icon {
+        transform: rotate(-90deg);
+        }
+        .viz-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+        }
+
+        .info-popup {
+        background: white;
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        max-width: 200px;
+        max-height: 300px;
+        overflow: auto;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        border-radius: 4px;
+        }
+        body.no-scroll {
+        overflow: hidden;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 1024px) {
+            .menu-btn {
+                display: flex;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                z-index: 40;
+                transform: translateX(-100%);
+                padding-top: calc(60px + 1rem);          
+                padding-bottom: calc(60px + 1rem);      
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                width: 100%;
+            }
+
+            .header-left .brand {
+                display: none;
+            }
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .close-btn {
+            display: none;
+        }
+
+        @media (max-width: 1024px) {
+            .close-btn {
+                display: flex;
+            }
+        }
+
+        /* Hide scrollbar */
+        .date-buttons::-webkit-scrollbar {
+            display: none;
+        }
+
+        .date-buttons {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <button class="btn btn-ghost btn-icon menu-btn" onclick="toggleSidebar()">
+          <i data-lucide="menu"></i>
+        </button>
+        <div class="logo"><i data-lucide="leaf"></i></div>
+        <div class="brand">
+          <h1>Aerial Image Viewer - OSU</h1>
+          <p>Ohio State AgSensing Lab</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h2 style="font-weight:600;color:#111827">Control Panel</h2>
+        <button class="btn btn-ghost btn-icon close-btn" onclick="toggleSidebar()">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      <div class="sidebar-content">
+        <!-- Data Selection Card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+            <i data-lucide="calendar"></i> Data Selection
+            </div>
+            <i data-lucide="chevron-down" class="collapse-icon"></i>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <label class="label">Year</label>
+              <select id="yearSelect" class="select"></select>
+            </div>
+            <div class="form-group">
+              <label class="label">Select Field</label>
+              <div id="fieldGrid" class="field-grid"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visualization Card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+            <i data-lucide="layers"></i> Visualization
+            </div>
+            <i data-lucide="chevron-down" class="collapse-icon"></i>
+          </div>
+          <div class="card-content">
+            <div id="vizGrid" class="viz-grid"></div>
+            <div class="switch-container">
+              <label class="label" style="margin-bottom:0">Show Plot Boundaries</label>
+              <label class="switch">
+                <input type="checkbox" id="showPolygons" checked>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Timeline Bar -->
+      <div class="timeline-bar">
+        <div class="timeline-header">
+          <h3 style="font-weight:600;color:#111827">Timeline</h3>
+          <div class="timeline-nav">
+            <button class="btn btn-outline btn-icon" id="scrollLeftTimeline">
+              <i data-lucide="chevron-left"></i>
+            </button>
+            <button class="btn btn-outline btn-icon" id="scrollRightTimeline">
+              <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        <div id="dateButtons" class="date-buttons"></div>
+      </div>
+
+      <!-- Map Area -->
+      <div class="map-area">
+        <div id="map-canvas" class="map-placeholder"></div>
+
+        <!-- Map Controls -->
+        <div class="map-controls">
+          <button class="map-control-btn" id="zoomToExtentBtn">
+            <i data-lucide="maximize-2"></i>
+          </button>
+        </div>
+
+        <!-- Legend -->
+        <div id="legend" class="legend" style="display:none">
+          <div class="card-header">
+            <div class="card-title" style="font-size:0.875rem;">Legend</div>
+          </div>
+          <div class="card-content">
+            <div id="legendItems" class="legend-items"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
+    
+<script type="text/javascript">
+  // ------------------------------
+  // CONFIG & STATE
+  // ------------------------------
+  const baseUrl       = "https://g-e36592.f0ce50.e229.dn.glob.us/";
+  const foldersJson   = baseUrl + "folders.json";
+  const tilePattern   = "{year}/{field}/{date}/{z}/{x}/{-y}.png";
+
+  let foldersJsonRaw  = {};
+  let availableData   = {};
+  let currentExtent   = [-9313907.433414,4844575.724413,-9313448.737660,4844844.606820];
+  let lastField       = null;
+  let currentStyle    = "outline";
+  let selectedDate    = null;
+  let selectedField   = null;
+  let selectedYear    = null;
+
+  // Color ramps (unchanged)
+    const numericGrowthStageColors = [
+    'rgba(237, 248, 251, 0.7)','rgba(204, 236, 230, 0.7)','rgba(153, 216, 201, 0.7)','rgba(102, 194, 164, 0.7)',
+    'rgba(65, 174, 118, 0.7)','rgba(35, 139, 69, 0.7)','rgba(0, 109, 44, 0.7)','rgba(0, 80, 20, 0.7)',
+    'rgba(255,255,204,0.7)','rgba(255,237,160,0.7)','rgba(254,217,118,0.7)','rgba(254,178,76,0.7)',
+    'rgba(253,141,60,0.7)','rgba(252,78,42,0.7)','rgba(227,26,28,0.7)','rgba(189,0,38,0.7)',
+    'rgba(128,0,38,0.7)','rgba(70,0,20,0.7)'
+    ];
+    const gs_corn_dict_js = {
+    'VE':0,'V1':1,'V2':2,'V3':3,'V4':4,'V5':5,'V6':6,'V7':7,'V8':8,'V9':9,
+    'V10':10,'V11':10,'V12':10,'V13':11,'V14':11,'V15':11,'V16':11,'V17':11,'V18':11,'VT':11,
+    'R1':12,'R2':13,'R3':14,'R4':15,'R5':16,'R6':17, 'R7':18, 'R8':19
+    };
+  const defaultNumeric = "rgba(128,128,128,0.7)";
+
+  // ------------------------------
+  // DOM UTILS
+  // ------------------------------
+  function qs(sel) { return document.querySelector(sel); }
+  function qsa(sel) { return Array.from(document.querySelectorAll(sel)); }
+  function make(tag, html="", cls="") {
+    const el = document.createElement(tag);
+    if(cls) el.className = cls;
+    el.innerHTML = html;
+    return el;
+  }
+
+  function updateVizOptionsAvailability() {
+    const features = plotSource.getFeatures();
+
+    // Check each attribute across all features
+    const hasGrowthStage   = features.some(f => {
+      const v = f.get("growth_stage_numeric");
+      return v !== null && v !== undefined && !isNaN(v);
+    });
+    const hasCanopyCover   = features.some(f => {
+      const v = parseFloat(f.get("canopy_cover"));
+      return !isNaN(v);
+    });
+    const hasNdvi          = features.some(f => {
+      const v = parseFloat(f.get("ndvi"));
+      return !isNaN(v);
+    });
+
+    // Grab each button by id or data-attribute
+    // (assuming your buildVizButtons created them with a data-id)
+    qsa(".viz-btn").forEach(btn => {
+      const vizType = btn.textContent.trim().toLowerCase();
+      // Alternatively, if you tagged with btn.dataset.id = o.id, use that.
+      if (btn.dataset.id === "growth_stage") {
+        if (hasGrowthStage) {
+          btn.classList.remove("disabled");
+          btn.disabled = false;
+        } else {
+          btn.classList.add("disabled");
+          btn.disabled = true;
+          // If currently selected, force back to outline
+          if (currentStyle === "growth_stage") {
+            document.querySelector('.viz-btn[data-id="outline"]').click();
+          }
+        }
+      }
+      else if (btn.dataset.id === "canopy_cover") {
+        if (hasCanopyCover) {
+          btn.classList.remove("disabled");
+          btn.disabled = false;
+        } else {
+          btn.classList.add("disabled");
+          btn.disabled = true;
+          if (currentStyle === "canopy_cover") {
+            document.querySelector('.viz-btn[data-id="outline"]').click();
+          }
+        }
+      }
+      else if (btn.dataset.id === "ndvi") {
+        if (hasNdvi) {
+          btn.classList.remove("disabled");
+          btn.disabled = false;
+        } else {
+          btn.classList.add("disabled");
+          btn.disabled = true;
+          if (currentStyle === "ndvi") {
+            document.querySelector('.viz-btn[data-id="outline"]').click();
+          }
+        }
+      }
+      // “outline” is always available—never disable
+    });
+  }
+
+  // ------------------------------
+  // SIDEBAR
+  // ------------------------------
+function toggleSidebar() {
+  qs("#sidebar").classList.toggle("open");
+  qs("#overlay").classList.toggle("show");
+  document.body.classList.toggle("no-scroll");
+}
+  qs(".menu-btn").onclick  = toggleSidebar;
+  qs(".close-btn").onclick = toggleSidebar;
+  qs("#overlay").onclick    = toggleSidebar;
+
+  // ------------------------------
+  // INITIALIZATION
+  // ------------------------------
+  document.addEventListener("DOMContentLoaded", () => {
+    // icons
+    lucide.createIcons();
+
+    // fetch folder structure
+    fetch(foldersJson)
+    .then(r => r.json())
+    .then(raw => {
+        foldersJsonRaw = raw;
+        availableData  = transformFolderStructure(raw);
+
+        initUI();
+        makeCardsCollapsible();
+        initMap();
+
+        // — NEW: force an initial load of the first real dataset —
+        if (selectedYear && selectedField && selectedDate) {
+        updateMapLayers();
+        updateAnalytics();
+        }
+    });
+  });
+
+    // ------------------------------
+    // COLLAPSIBLE CARDS
+    // ------------------------------
+    function makeCardsCollapsible() {
+    document.querySelectorAll(".card-header").forEach(header => {
+        const card = header.closest(".card");
+        // ensure header is flex so title + icon line up
+        header.style.display = "flex";
+        header.style.alignItems = "center";
+
+        header.addEventListener("click", () => {
+        card.classList.toggle("collapsed");
+        // redraw icons so the chevron rotates
+        lucide.replace();
+        });
+    });
+    }
+
+  // ------------------------------
+  // TRANSFORM RAW → { year: [fields] }
+  // ------------------------------
+  function transformFolderStructure(raw) {
+    const out = {};
+    Object.keys(raw).sort().forEach(year => {
+      out[year] = Object.keys(raw[year] || {}).sort();
+    });
+    return out;
+  }
+
+  // ------------------------------
+  // BUILD TOP-LEVEL UI
+  // ------------------------------
+    function initUI() {
+    buildYearSelect();
+    buildVizButtons();
+
+    // move the switch above the viz buttons
+    const vizCard       = qs("#vizGrid").closest(".card-content");
+    const switchContainer = qs(".switch-container");
+    vizCard.prepend(switchContainer);
+
+    // single event handler
+    const switchEl = qs("#showPolygons");
+    switchEl.onchange = e => {
+    const show = e.target.checked;
+    plotLayer.setVisible(show);
+    updateVizAvailability();
+
+    if (!show) {
+        qs("#legend").style.display = "none";
+    } else {
+        updateLegend();
+    }
+    };
+
+    // initial state
+    updateVizAvailability();
+
+    // map zoom button
+    qs("#zoomToExtentBtn").onclick = () => {
+      // fetch the exact extent from the currently selected year/field/date
+      const meta = foldersJsonRaw[selectedYear]?.[selectedField]?.[selectedDate];
+      if (meta && meta.extent) {
+        map.getView().fit(meta.extent, {
+          padding: [20,20,20,20],
+          duration: 500
+        });
+      } else {
+        // fallback if no extent is available
+        console.warn("No extent found for", selectedYear, selectedField, selectedDate);
+      }
+    };
+    // timeline arrow scrolling (unchanged)
+    const leftBtn  = qs("#scrollLeftTimeline");
+    const rightBtn = qs("#scrollRightTimeline");
+    const container= qs("#dateButtons");
+    const amount   = container.clientWidth * 0.5;
+
+    leftBtn.onclick  = () => container.scrollBy({ left: -amount, behavior: "smooth" });
+    rightBtn.onclick = () => container.scrollBy({ left:  amount, behavior: "smooth" });
+
+    function updateArrows() {
+        leftBtn.disabled  = container.scrollLeft <= 0;
+        rightBtn.disabled = container.scrollLeft + container.clientWidth >= container.scrollWidth;
+    }
+    container.addEventListener("scroll", updateArrows);
+    window.addEventListener("resize", () => setTimeout(updateArrows, 100));
+    updateArrows();
+    }
+
+    function updateVizAvailability() {
+    const enabled = qs("#showPolygons").checked;
+    qsa(".viz-btn").forEach(btn => {
+        if (enabled) btn.classList.remove("disabled");
+        else          btn.classList.add("disabled");
+    });
+    }
+
+    function buildYearSelect() {
+    const sel = qs("#yearSelect");
+    sel.innerHTML = "";
+    const years = Object.keys(availableData);
+    
+    // populate all years (including empty ones)
+    years.forEach(y => {
+        const opt = make("option", y);
+        opt.value = y;
+        sel.appendChild(opt);
+    });
+
+    sel.onchange = () => {
+        selectedYear = sel.value;
+        buildFieldButtons();
+    };
+
+    // auto‐pick first non‐empty year (fallback to 0 if none)
+    const yearToSelect = "2025";
+    const targetIndex = years.indexOf(yearToSelect);
+
+    if (targetIndex !== -1) {
+        // If 2025 is found in the list, select it
+        sel.value = yearToSelect;
+    } else {
+        // Fallback: if 2025 isn't an option, select the first non-empty year
+        const firstGood = years.findIndex(y => (availableData[y] || []).length > 0);
+        sel.selectedIndex = firstGood >= 0 ? firstGood : 0;
+    }
+
+    // Trigger the change event to load the fields for the selected year
+    sel.onchange(); 
+    }
+
+  function buildFieldButtons() {
+    const grid = qs("#fieldGrid");
+    grid.innerHTML = "";
+    selectedField = null;
+    const fields = availableData[selectedYear] || [];
+    fields.forEach(f => {
+      const btn = make("button", f, "field-btn");
+      btn.onclick = () => {
+        qsa(".field-btn.selected").forEach(x=>x.classList.remove("selected"));
+        btn.classList.add("selected");
+        selectedField = f;
+        buildDateButtons();
+      };
+      grid.appendChild(btn);
+    });
+    // auto-pick first
+    if(grid.firstChild) grid.firstChild.click();
+  }
+
+  function buildVizButtons() {
+    const vizOptions = [
+      { id: "outline",      label: "Plot Boundaries", icon: "map-pin"    },
+      { id: "growth_stage", label: "Growth Stage",    icon: "leaf"       },
+      { id: "canopy_cover", label: "Canopy Cover",    icon: "activity"   },
+      { id: "ndvi",         label: "NDVI",            icon: "trending-up" }
+    ];
+    const grid = qs("#vizGrid");
+    grid.innerHTML = "";
+
+    vizOptions.forEach(o => {
+      const btn = make(
+        "button",
+        `<i data-lucide="${o.icon}"></i> ${o.label}`,
+        "viz-btn"
+      );
+      // add data‐viz attribute so we can reference it later:
+      btn.setAttribute("data-viz", o.id);
+
+      if (o.id === currentStyle) btn.classList.add("selected");
+      btn.onclick = () => {
+        // if the button is disabled, ignore clicks
+        if (btn.classList.contains("disabled")) return;
+
+        qsa(".viz-btn.selected").forEach(x => x.classList.remove("selected"));
+        btn.classList.add("selected");
+        currentStyle = o.id;
+        plotSource.changed();
+        updateLegend();
+      };
+      grid.appendChild(btn);
+    });
+    lucide.createIcons();
+  }
+
+
+  function buildDateButtons() {
+      const container = document.getElementById("dateButtons");
+      const previousSelectedDate = selectedDate; // Store the date from the previous field
+      container.innerHTML = "";
+
+      // Get the available dates for the newly selected field and sort them
+      const datesObj = (foldersJsonRaw[selectedYear] || {})[selectedField] || {};
+      const datesArr = Object.keys(datesObj).sort();
+
+      // If the new field has no available dates, clear the UI and stop
+      if (datesArr.length === 0) {
+          selectedDate = null;
+          updateMapLayers(); // These functions should handle a null date
+          updateAnalytics();
+          return;
+      }
+
+      // Create a button for each available date
+      datesArr.forEach(dateStr => {
+          const btn = document.createElement("button");
+          btn.className = "date-btn";
+          btn.textContent = formatDate(dateStr);
+          btn.dataset.date = dateStr; // Use a data-attribute to easily find the button later
+          btn.onclick = () => {
+              document.querySelectorAll(".date-btn.selected").forEach(x => x.classList.remove("selected"));
+              btn.classList.add("selected");
+              selectedDate = dateStr;
+              updateMapLayers();
+              updateAnalytics();
+          };
+          container.appendChild(btn);
+      });
+
+      // --- NEW LOGIC: Find and select the closest date ---
+
+      let dateToSelect = datesArr[0]; // Default to the first date as a fallback
+
+      if (previousSelectedDate) {
+          // Helper function to parse 'YYYYMMDD' strings into Date objects for comparison
+          const parseDate = (str) => new Date(str.slice(0, 4), str.slice(4, 6) - 1, str.slice(6, 8));
+          const previousTime = parseDate(previousSelectedDate).getTime();
+          
+          let minDiff = Infinity;
+
+          // Iterate through the new field's dates to find the closest one
+          datesArr.forEach(currentDateStr => {
+              const diff = Math.abs(parseDate(currentDateStr).getTime() - previousTime);
+              if (diff < minDiff) {
+                  minDiff = diff;
+                  dateToSelect = currentDateStr;
+              }
+          });
+      }
+
+      // Find the button that corresponds to the chosen date and click it
+      const buttonToClick = container.querySelector(`.date-btn[data-date="${dateToSelect}"]`);
+      if (buttonToClick) {
+          buttonToClick.click();
+      }
+  }
+
+  function formatDate(ds) {
+    const y=ds.slice(0,4), m=ds.slice(4,6), d=ds.slice(6);
+    const names=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    return names[+m-1] + " " + (+d);
+  }
+
+  // ------------------------------
+  // MAP & LAYERS
+  // ------------------------------
+  let map, plotSource, plotLayer, orthoLayer;
+
+  function initMap() {
+    // vector
+    plotSource = new ol.source.Vector({
+    url: "",                                
+    format: new ol.format.GeoJSON()
+    });
+
+    plotSource.on('featuresloadend', function() {
+        updateVizButtonsBasedOnData();
+        updateLegend();
+    });
+
+    plotLayer  = new ol.layer.Vector({
+      source:plotSource,
+      style: dynamicStyle,
+      visible:true
+    });
+
+    // orthomosaic
+    const xyz = new ol.source.XYZ({ url: baseUrl+tilePattern, minZoom:15, maxZoom:24 });
+    orthoLayer = new ol.layer.Tile({ source:xyz, visible:true });
+
+    // base
+    map = new ol.Map({
+      target: "map-canvas",
+      layers: [
+        new ol.layer.Tile({ source:new ol.source.OSM() }),
+        orthoLayer,
+        plotLayer
+      ],
+      view: new ol.View({ center:[0,0], zoom:2 })
+    });
+    // initial fit
+    map.getView().fit(currentExtent, { padding:[30,30,30,30], duration:0 });
+
+    // popups, pointer cursor, etc.
+    initPopupAndCursor();
+  }
+
+  function dynamicStyle(feature) {
+    let fill="transparent";
+    if(currentStyle==="growth_stage"){
+      const i=feature.get("growth_stage_numeric")||-1;
+      fill = numericGrowthStageColors[i] || defaultNumeric;
+    }
+    if(currentStyle==="canopy_cover"){
+      const v=parseFloat(feature.get("canopy_cover"));
+      fill = getCanopyColor(v);
+    }
+    if(currentStyle==="ndvi"){
+      const v=parseFloat(feature.get("ndvi"));
+      fill = getNdviColor(v);
+    }
+    const strokeWidth = currentStyle==="outline"?2:1;
+    return new ol.style.Style({
+      fill:new ol.style.Fill({ color:fill }),
+      stroke:new ol.style.Stroke({ color:"#0000FF", width:strokeWidth })
+    });
+  }
+
+  // helper color fns (copy yours)
+  function getCanopyColor(v) {
+    if (isNaN(v) || v<0) return defaultNumeric;
+    v = Math.min(Math.max(v,0),1);
+    const g = Math.floor(50 + v*200);
+    return `rgba(144, ${g}, 144, 0.7)`;
+    }
+  function getNdviColor(v) {
+    if (isNaN(v)) return defaultNumeric;
+    v = Math.min(Math.max(v,-1),1);
+    if (v<0.2) return `rgba(205,92,92,0.7)`;
+    if (v<0.4) return `rgba(255,215,0,0.7)`;
+    if (v<0.6) return `rgba(173,255,47,0.7)`;
+    if (v<0.8) return `rgba(50,205,50,0.7)`;
+    return `rgba(0,100,0,0.7)`;
+    }
+
+  function updateMapLayers() {
+      // 1) build the new tile URL + extent
+      const meta = foldersJsonRaw[selectedYear][selectedField][selectedDate];
+      const tileUrl = baseUrl + tilePattern
+        .replace("{year}", selectedYear)
+        .replace("{field}", selectedField)
+        .replace("{date}", selectedDate);
+
+      // —— REPLACE the tile source with a brand-new one ——
+      orthoLayer.setSource(new ol.source.XYZ({
+        url:     tileUrl,
+        minZoom: 15,
+        maxZoom: 24
+      }));
+
+      if (meta.extent && selectedField !== lastField) {
+        map.getView().fit(meta.extent, {
+          padding: [20,20,20,20],
+          duration: 500
+        });
+        lastField = selectedField;
+      } 
+
+      // 2) now (re)load your GeoJSON and manage the toggle switch
+      const switchEl = qs("#showPolygons");
+      const hasGeoJson = meta && typeof meta.geojson === 'string' && meta.geojson.length > 0;
+
+      // Enable/disable the switch based on data availability.
+      switchEl.disabled = !hasGeoJson;
+
+      if (hasGeoJson) {
+          // Data exists: AUTOMATICALLY turn switch ON, load data, and show the layer.
+          const fname = meta.geojson.split("/").pop();
+          plotSource.setUrl(`${baseUrl}${selectedYear}/${selectedField}/${selectedDate}/${fname}`);
+          plotSource.refresh();
+          
+          // --- THIS IS THE CHANGE ---
+          switchEl.checked = true;
+          plotLayer.setVisible(true);
+
+      } else {
+          // No data: force switch OFF, disable it, clear old polygons, and hide the layer.
+          switchEl.checked = false;
+          plotSource.clear();
+          plotLayer.setVisible(false);
+          qs("#legend").style.display = "none";
+      }
+
+      // Ensure the other viz buttons (NDVI, etc.) are updated based on the switch's new state.
+      updateVizAvailability();
+    }
+
+  // ------------------------------
+  // ANALYTICS & LEGEND
+  // ------------------------------
+  function updateAnalytics() {
+    const meta = foldersJsonRaw[selectedYear][selectedField][selectedDate];
+    qs("#ndviValue").textContent     = meta.ndvi || "—";
+    qs("#canopyValue").textContent   = Math.round((meta.canopy||0)*100)+"%";
+    qs("#growthStage").textContent   = meta.stage || "—";
+    qs("#healthPct").textContent     = Math.round((meta.canopy||0)*100)+"%";
+    qs("#healthBar").style.width     = (meta.canopy||0)*100 + "%";
+  }
+
+  function updateLegend() {
+    const legendEl = qs("#legend"),
+          items    = qs("#legendItems");
+
+    // Hide legend unless polygons are shown and style isn’t outline
+    if (!qs("#showPolygons").checked || currentStyle === "outline") {
+      legendEl.style.display = "none";
+      return;
+    }
+    legendEl.style.display = "block";
+    items.innerHTML = "";
+
+    // grab all features currently loaded
+    const features = plotSource.getFeatures();
+
+    if (currentStyle === "canopy_cover") {
+      // extract canopy_cover values as numbers
+      const vals = features
+        .map(f => parseFloat(f.get("canopy_cover")))
+        .filter(v => !isNaN(v) && v >= 0 && v <= 1);
+
+      if (vals.length === 0) return;
+
+      let min = Math.min(...vals);
+      let max = Math.max(...vals);
+
+      // round outward to nearest 0.05
+      min = Math.floor(min * 20) / 20;
+      max = Math.ceil (max * 20) / 20;
+
+      // convert to percentages
+      const pMin = Math.round(min * 100);
+      const pMax = Math.round(max * 100);
+
+      // build one gradient swatch
+      const lowColor  = getCanopyColor(min);
+      const highColor = getCanopyColor(max);
+
+      const div = make(
+        "div",
+        `<div class="legend-color" 
+              style="background:linear-gradient(to right, ${lowColor}, ${highColor}); width:6rem"></div>
+        <span>Canopy Cover: ${pMin}% – ${pMax}%</span>`,
+        "legend-item"
+      );
+      items.appendChild(div);
+    }
+    else if (currentStyle === "ndvi") {
+      const vals = features
+        .map(f => parseFloat(f.get("ndvi")))
+        .filter(v => !isNaN(v));
+
+      if (vals.length === 0) return;
+
+      let min = Math.min(...vals);
+      let max = Math.max(...vals);
+
+      // round outward to nearest 0.05
+      min = Math.floor(min * 20) / 20;
+      max = Math.ceil (max * 20) / 20;
+
+      const div = make(
+        "div",
+        `<div class="legend-color" 
+              style="background:linear-gradient(to right, ${getNdviColor(min)}, ${getNdviColor(max)}); width:6rem"></div>
+        <span>NDVI: ${min.toFixed(2)} – ${max.toFixed(2)}</span>`,
+        "legend-item"
+      );
+      items.appendChild(div);
+    }
+    else if (currentStyle === "growth_stage") {
+      // 1) compute min/max numeric stage indices
+      const vals = plotSource.getFeatures()
+        .map(f => parseInt(f.get("growth_stage_numeric")))
+        .filter(v => !isNaN(v));
+      const minIdx = Math.min(...vals);
+      const maxIdx = Math.max(...vals);
+
+      // 2) map back to first/last alphanumeric codes
+      const codesByIdx = vals.reduce((acc, idx) => {
+        acc[idx] = true;
+        return acc;
+      }, {});
+      // build a list of all codes in gs_corn_dict_js for the range
+      const allCodes = [];
+      for (let i = minIdx; i <= maxIdx; i++) {
+        const codes = Object.entries(gs_corn_dict_js)
+          .filter(([code, num]) => num === i)
+          .map(([code]) => code);
+        if (codes.length) allCodes.push(codes[0]); // pick the first code for each numeric
+      }
+      const label = `${allCodes[0]} – ${allCodes[allCodes.length - 1]}`;
+
+      // 3) build a CSS gradient string from numericGrowthStageColors[minIdx..maxIdx]
+      const gradientStops = numericGrowthStageColors
+        .slice(minIdx, maxIdx + 1)
+        .map((c, j, arr) => {
+          const pos = Math.round((j / (arr.length - 1)) * 100);
+          return `${c} ${pos}%`;
+        })
+        .join(", ");
+
+      // 4) render one legend‐item
+      const div = make(
+        "div",
+        `<div class="legend-color" 
+              style="background:linear-gradient(to right, ${gradientStops}); width:6rem"></div>
+        <span>Growth Stage: ${label}</span>`,
+        "legend-item"
+      );
+      items.appendChild(div);
+    }
+  }
+
+  function updateVizButtonsBasedOnData() {
+    // find all loaded features
+    const features = plotSource.getFeatures();
+
+    // keys we care about:
+    const checks = {
+      "growth_stage": f => {
+        const v = f.get("growth_stage_numeric");
+        return v !== null && v !== undefined && !isNaN(v);
+      },
+      "canopy_cover": f => {
+        const v = parseFloat(f.get("canopy_cover"));
+        return !isNaN(v);
+      },
+      "ndvi": f => {
+        const v = parseFloat(f.get("ndvi"));
+        return !isNaN(v);
+      }
+      // note: "outline" never needs disabling, so we skip it
+    };
+
+    qsa(".viz-btn").forEach(btn => {
+      const key = btn.getAttribute("data-viz");
+      if (key === "outline") {
+        // the outline button should always remain enabled
+        btn.classList.remove("disabled");
+        return;
+      }
+      // check if *any* feature has valid data for this key:
+      const anyValid = features.some(f => checks[key]?.(f));
+      if (anyValid) {
+        btn.classList.remove("disabled");
+      } else {
+        btn.classList.add("disabled");
+        // if it’s currently selected, switch back to outline
+        if (btn.classList.contains("selected")) {
+          // un‐select it
+          btn.classList.remove("selected");
+          // select the “outline” button instead
+          const outlineBtn = qs('.viz-btn[data-viz="outline"]');
+          outlineBtn.classList.add("selected");
+          currentStyle = "outline";
+        }
+      }
+    });
+  }
+
+
+  // ------------------------------
+  // POPUP & POINTER
+  // ------------------------------
+function initPopupAndCursor() {
+  const overlayEl = make("div","", "info-popup");
+  document.body.appendChild(overlayEl);
+  const popup = new ol.Overlay({ element: overlayEl, offset: [0,-10] });
+  map.addOverlay(popup);
+
+  map.on("click", evt => {
+    // hide old
+    overlayEl.style.display = "none";
+    popup.setPosition(undefined);
+
+    // find the plot feature
+    const feature = map.forEachFeatureAtPixel(evt.pixel, (f, layer) => {
+      return layer === plotLayer ? f : undefined;
+    });
+    if (!feature) return;
+
+    // build content
+    let html = `<strong>Plot Details</strong><hr style="margin:5px 0;border-top:1px solid #eee;">`;
+
+    // 1) GeoJSON feature properties
+    const props = feature.getProperties();
+    Object.entries(props).forEach(([key, val]) => {
+      if (key === "geometry") return;
+      html += `<div><b>${key}:</b> ${val}</div>`;
+    });
+
+    // inject & show
+    overlayEl.innerHTML = html;
+    overlayEl.style.display = "block";
+    popup.setPosition(evt.coordinate);
+  });
+
+  map.on("pointermove", e => {
+    const hit = map.hasFeatureAtPixel(e.pixel, { layerFilter: l => l === plotLayer });
+    map.getTargetElement().style.cursor = hit ? "pointer" : "";
+  });
+}
+</script>
+</body>
+</html>

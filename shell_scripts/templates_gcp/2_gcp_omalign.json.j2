@@ -1,0 +1,57 @@
+{
+  "taskGroups": [
+    {% for task in tasks %}
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "container": {
+              "imageUri": "gcr.io/uas-orchestration-engine/orchestration-images/uas-worker:latest",
+              "entrypoint": "/bin/bash",
+              "commands": [
+                "/app/execution/{{ task.script_to_run }}"
+              ]
+            },
+            "environment": {
+              "variables": {{ task.env_vars | tojson }}
+            }
+          }
+        ]
+        {% if task.gpu %}
+        ,
+        "accelerators": [
+          {
+            "type": "nvidia-tesla-t4",
+            "count": 1
+          }
+        ]
+        {% endif %}
+      },
+      "taskCount": 1
+      {% if dependencies[loop.index0] %}
+      ,
+      "dependencies": [
+        {% for dep_index in dependencies[loop.index0] %}
+        { "sourceTaskGroupIndex": {{ dep_index }} }{{ "," if not loop.last }}
+        {% endfor %}
+      ]
+      {% endif %}
+    }{{ "," if not loop.last }}
+    {% endfor %}
+  ],
+  "allocationPolicy": {
+    "instances": [
+      {
+        "policy": {
+          "machineType": "{{ machine_type | default('n1-standard-4') }}"
+        }
+      }
+    ],
+    "serviceAccount": {
+      "email": "{{ service_account_email }}"
+    }
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}

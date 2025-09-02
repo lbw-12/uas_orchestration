@@ -1,0 +1,14 @@
+# macOS metadata (ignore in any folder)
+**/.DS_Store
+
+# Python bytecode and cache directories
+**/*.pyc
+**/__pycache__/
+
+# Optionally ignore core dumps (if you don’t need them)
+core.*
+**/core.*
+
+shell_scripts/generated/
+
+execution/logs/

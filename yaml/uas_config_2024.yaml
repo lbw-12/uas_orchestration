@@ -1,0 +1,234 @@
+# Paths
+# This is the base folder that the other paths are relative to
+base_folder: '/fs/ess/PAS2699/nitrogen/data/uas/2024/'
+om_folder: 'orthomosaics/v2/'
+om_aligned_folder: 'orthomosaics/v2_5_aligned/'
+processing_folder: 'processing/'
+
+# The plot tiles folder should have 4 subfolders in the form 'plottiles_{sensor}_{source}' where source = 'om' or 'ir' and sensor = 'rgb' or 'ms'
+# The plot tiles in each subfolder should be named in the form '{om}_{source}_{sensor}_{plot}.tif'
+# Suppose config is your loaded YAML dictionary, fmt_str = config['plottiles_format']
+# This can set the filename: filename = fmt_str.format(om=om, source=source, sensor=sensor, plot=plot)
+plottiles_folder: 'plottiles/'
+plottiles_format: '{om}_{source}_{crop}_{sensor}_{plot_no}_{band}_{date}'
+  
+# this is for the points for template matching
+shapefiles_alignment: "orthomosaics/shapefiles_v1/"
+shapefiles_alignment_format: "{om}_pts/{om}_pts.shp"
+# The DGR and IR folder is located in each flight folder
+
+
+# Map tiles and geojson folder
+maptiles_folder: '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+maptiles_base_folder: '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/'
+
+patches_folder: 'plot_patches/'
+model_inference_folder: 'model_inference/'
+
+
+# Flight list dictionary in the form [flight][orthomosaic][boundary shapefile] where flight and orthomosai are required and boundary can be empty.
+flight_list:
+  western_n:
+    western_n:
+      []
+  western_bftb:
+    western_bftb:
+      []
+  wooster_n:
+    wooster_n:
+      []
+  wooster_bftb:
+    wooster_bftb:
+      []
+  northwest: 
+    northwest_bftb:
+      '/fs/ess/PAS2699/nitrogen/data/uas/2024/shapefiles/northwest_bftb_boundary/northwest_bftb_boundary.shp'
+    northwest_n:
+      '/fs/ess/PAS2699/nitrogen/data/uas/2024/shapefiles/northwest_n_boundary/northwest_n_boundary.shp'
+  nwdredge:
+    nwdredge:
+      []
+  frantom:
+    frantom:
+      '/fs/ess/PAS2699/nitrogen/data/uas/2024/shapefiles/frantom_b123_boundary/frantom_b123_boundary.shp'
+  farmscience:
+    farmscience:
+      []
+
+# Publishing folders
+publishing_folder:
+  western_n:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+  western_bftb:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+  wooster_n:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+  wooster_bftb:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+  northwest_n:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+  northwest_bftb:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+  nwdredge:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+  frantom:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/frantom_private/2024/'
+  farmscience:
+    '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2024/'
+
+# List of plot shapefiles relative locations with respect to the base folder, it is a nested dictionary in the form [orthomosaic][crop]
+plot_shapefiles:
+  western_n:
+    corn:
+      'shapefiles/western_n_s-c/western_n_s-c.shp'
+  western_bftb:
+    corn:
+      'shapefiles/western_bftb_corn/western_bftb_corn.shp'
+    soy:
+      'shapefiles/western_bftb_soy/western_bftb_soy.shp'
+  northwest_n:
+    corn:
+      'shapefiles/northwest_n_s-c/northwest_n_s-c.shp'
+  northwest_bftb:
+    corn:
+      'shapefiles/northwest_bftb_corn/northwest_bftb_corn.shp'
+    soy:
+      'shapefiles/northwest_bftb_soy/northwest_bftb_soy.shp'
+  wooster_n:
+    corn:
+      'shapefiles/wooster_n/wooster_n.shp'
+  wooster_bftb:
+    corn:
+      'shapefiles/wooster_bftb_corn/wooster_bftb_corn.shp'
+    soy:
+      'shapefiles/wooster_bftb_soy/wooster_bftb_soy.shp'
+    
+# Sensors
+sensor_dict:
+  rgb: 'sony'
+  ms: 'altum'
+
+#Processing scripts
+orchestrate: 'uas_pipeline/orchestration/uas_orchestrate.py'
+uas_pipeline:
+  step1:
+    shell_script_template: 'shell_scripts/templates/1_sbatch_om.sh.j2'
+    shell_script_folder: 'shell_scripts/1_sbatches_om'
+    python_script: '' # ODM orthomosaic creation
+    log_folder: 'logs_om'
+    sensor: ['rgb', 'ms']
+    step_dependency: []
+    date_dependency: 'none'
+    model_path: ''
+    output_folder: 'orthomosaics/initial/'
+    output_file: '{om}_{sensor_type}_{date}.tif'
+  step2:
+    shell_script_template: 'shell_scripts/templates/2_sbatch_omalign.sh.j2'
+    shell_script_folder: 'shell_scripts/2_sbatches_omalign'
+    python_script: 'om_alignment.py' # Orthomosaic alignment
+    log_folder: 'logs_omalign'
+    sensor: ['rgb', 'ms']
+    step_dependency: ['step1']
+    date_dependency: 'previous'
+    model_path: ''
+    output_folder: 'orthomosaics/aligned/'
+    output_file: '{om}_{sensor_type}_{date}_aligned.tif'
+  step3:
+    shell_script_template: 'shell_scripts/templates/3_sbatch_plottile_om.sh.j2'
+    shell_script_folder: 'shell_scripts/3_sbatches_plot_tiles'
+    python_script: 'plot_tiles_ir_om.py' # Plot tile creation
+    log_folder: 'logs_plot_tiles'
+    sensor: ['rgb', 'ms']
+    step_dependency: ['step2']
+    date_dependency: 'none'
+    model_path: ''
+    output_folder: 'plottiles/plot_tiles_{sensor_type}_{source}/{om}_{sensor_type}_{date}/'
+    output_file: '{om}_{source}_{crop}_{sensor}_{plot_no}_{band}_{date}.tif'
+  step4:
+    shell_script_template: 'shell_scripts/templates/4_sbatch_dgr.sh.j2'
+    shell_script_folder: 'shell_scripts/4_sbatches_dgr'
+    python_script: 'dgr.py' # DGR creation
+    log_folder: 'logs_dgr'
+    sensor: ['rgb']
+    step_dependency: []
+    date_dependency: 'none'
+    model_path: ''
+    output_folder: 'dgr/{om}_{sensor_type}_{date}/'
+    output_file: '{om}_{sensor_type}_{date}_{number}_dgr.tif'
+  step5:
+    shell_script_template: 'shell_scripts/templates/5_sbatch_ir.sh.j2'
+    shell_script_folder: 'shell_scripts/5_sbatches_ir'
+    python_script: 'ir.py' # IR creation
+    log_folder: 'logs_ir'
+    sensor: ['rgb']
+    step_dependency: ['step2','step4']
+    date_dependency: 'none'
+    model_path: ''
+    output_folder: 'ir/{om}_{sensor_type}_{date}/'
+    output_file: '{om}_{sensor_type}_{date}_{number}_ir.tif'
+  step6:
+    shell_script_template: 'shell_scripts/templates/6_sbatch_plot_to_patch.sh.j2'
+    shell_script_folder: 'shell_scripts/6_sbatches_plot_to_patch'
+    python_script: 'plot_tiles_to_patches.py'
+    log_folder: 'logs_plot_to_patch' 
+    sensor: ['rgb']
+    step_dependency: ['step3']
+    date_dependency: 'none'
+    model_path: ''
+    output_folder: 'plot_patches/{om}_{source}_{sensor_type}_{date}/'
+    output_file: '{om}_{source}_{crop}_{sensor_type}_{plot_no}_{date}_{patch_no}.tif'
+  step7:
+    shell_script_template: 'shell_scripts/templates/7_sbatch_inf_gs.sh.j2'
+    shell_script_folder: 'shell_scripts/7_sbatches_inf_gs'
+    python_script: 'inference_growth_stage.py'
+    log_folder: 'logs_inf_gs' 
+    sensor: ['rgb']
+    step_dependency: ['step6']
+    date_dependency: 'none'
+    model_path: '/fs/ess/PAS2699/nitrogen/models/growth_stage/gs_vit_model.pth'
+    output_folder: 'inference/'
+    output_file: 'inference_{om}_{sensor_type}_{date}_gs.json'
+  step8:
+    shell_script_template: 'shell_scripts/templates/8_sbatch_inf_cc.sh.j2'
+    shell_script_folder: 'shell_scripts/8_sbatches_inf_cc'
+    python_script: 'inference_canopy_cover.py'
+    log_folder: 'logs_inf_cc'
+    sensor: ['rgb']
+    step_dependency: ['step3']
+    date_dependency: 'none'
+    model_path: '/fs/ess/PAS2699/nitrogen/models/canopy_coverage/cc_kmeans_model.pkl'
+    output_folder: 'inference/'
+    output_file: 'inference_{om}_{sensor_type}_{date}_cc.json'
+  step9:
+    shell_script_template: 'shell_scripts/templates/9_sbatch_inf_sr.sh.j2'
+    shell_script_folder: 'shell_scripts/9_sbatches_inf_sr' 
+    python_script: 'inference_spectral_reflectance.py'
+    log_folder: 'logs_inf_sr'
+    sensor: ['ms']
+    step_dependency: ['step3']
+    date_dependency: 'none'
+    model_path: '/fs/ess/PAS2699/nitrogen/models/spectral_reflectance/sr_rf_classifier_model.pkl'
+    output_folder: 'inference/'
+    output_file: 'inference_{om}_{sensor_type}_{date}_sr.json'
+  step10:
+    shell_script_template: 'shell_scripts/templates/10_sbatch_process_geojson.sh.j2'
+    shell_script_folder: 'shell_scripts/10_sbatches_process_geojson' 
+    python_script: 'process_geojson.py'
+    log_folder: 'logs_geojson'
+    sensor: ['rgb', 'ms']
+    step_dependency: ['step7', 'step8', 'step9']
+    date_dependency: 'none'
+    model_path: ''
+    output_folder: '{year}/{om}/{date}/'
+    output_file: '{om}_{date}.geojson'
+  step11:
+    shell_script_template: 'shell_scripts/templates/11_sbatch_maptiles.sh.j2'
+    shell_script_folder: 'shell_scripts/11_sbatches_maptiles'
+    python_script: '' # gdal2tiles.py maptiles creation
+    log_folder: 'logs_maptiles'
+    sensor: ['rgb']
+    step_dependency: ['step2']
+    date_dependency: 'none'
+    model_path: ''
+    output_folder: '/fs/ess/PAS2699/nitrogen/data/uas/published/osu_public/2025/'
+    output_file: 'tilemapresource.xml'

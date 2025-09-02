@@ -1,0 +1,27 @@
+# Git history and configuration
+.git/
+.gitignore
+
+
+# macOS metadata (ignore in any folder)
+**/.DS_Store
+
+# Python bytecode and cache directories
+**/*.pyc
+**/__pycache__/
+
+# Optionally ignore core dumps (if you don’t need them)
+core.*
+**/core.*
+
+shell_scripts/generated/
+
+execution/logs/
+
+# Ignore IDE-specific folders
+.vscode/
+.idea/
+
+# Any other temporary or local files
+*.log
+*.tmp

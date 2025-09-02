@@ -1,0 +1,18 @@
+{
+    "taskGroups": [{
+      "taskSpec": {
+        "runnables": [{
+          "container": {
+            "imageUri": "gcr.io/uas-orchestration-engine/orchestration-images/hello-world:latest",
+            "commands": [
+              "/bin/sh",
+              "-c",
+              "echo 'Hello from the Google Cloud Batch job!'"
+            ]
+          }
+        }]
+      },
+      "taskCount": 1
+    }],
+    "logsPolicy": { "destination": "CLOUD_LOGGING" }
+  }

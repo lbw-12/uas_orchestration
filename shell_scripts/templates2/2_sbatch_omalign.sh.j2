@@ -1,0 +1,68 @@
+#!/bin/bash
+#SBATCH -J "omalign_{{ om }}_{{ sensor_type }}_{{ date }}"
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+{% if resources.cpus == 'all' %}
+#SBATCH --exclusive
+{% else %}
+#SBATCH --cpus-per-task={{ resources.cpus }}
+{% endif %}
+#SBATCH --mem={{ resources.memory }}
+#SBATCH --partition={{ resources.partition }}
+#SBATCH -A PAS2699
+#SBATCH -o "{{ log_dir }}/%j-{{ job_title }}-omalign.txt"
+#SBATCH --error="{{ log_dir }}/%j-{{ job_title }}-omalign.err"
+#SBATCH --time={{ resources.time }}
+
+source /fs/ess/PAS2699/envs/miniconda3/etc/profile.d/conda.sh
+conda activate harvest
+
+num_cores=$(nproc)
+echo Number of cores: $num_cores
+
+start_time=$(date +%s)
+
+job_name="{{ job_title }}"
+
+SEARCH="{{ job_title }}.tif"
+PATTERN="{{ om }}_{{sensor_type}}"
+OM_FOLDER={{ om_folder }}
+OM_ALIGNED_FOLDER={{ om_aligned_folder }}
+SHAPEFILE_PATH={{ shapefiles_alignment_path }}
+
+echo "running script for omalign_{{om}}_{{sensor_type}}_{{date}}"
+
+python -u om_alignment_old.py \
+    --search "$SEARCH" \
+    --pattern "$PATTERN" \
+    --shapefile_path "$SHAPEFILE_PATH" \
+    --om_folder "$OM_FOLDER" \
+    --om_aligned_folder="$OM_ALIGNED_FOLDER"
+
+
+
+end_time=$(date +%s)
+execution_time=$((end_time - start_time))
+
+processing_step="omalign"
+
+echo "finding number of alignment points"
+
+alignment_points=$(python -u ../utils/get_alignment_points.py "${SHAPEFILE_PATH}/{{ om }}_pts/{{ om }}_pts.shp")
+
+log_dir={{logdir_perf}}
+log_file="$log_dir/execution_times_omalign.csv"
+
+# Check if the log file exists
+if [ ! -f "$log_file" ]; then
+  # File doesn't exist, so write the header
+  echo "job_id,job_name,processing_step,num_cores,memory,start_time,end_time,execution_time,alignment_points,output_size" > "$log_file"
+fi
+
+output_size=$(du -sh "$OM_ALIGNED_FOLDER/${job_name}_aligned.tif" | awk '{print $1}')
+
+# Append the data
+echo "$SLURM_JOB_ID,$job_name,$processing_step,$num_cores,$SLURM_MEM_PER_NODE,$start_time,$end_time,$execution_time,$alignment_points,$output_size" >> "$log_file"
+
+echo "All jobs are done, total time of execution: $execution_time seconds"
+
