@@ -1,0 +1,68 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "container": {
+              "imageUri": "us-central1-docker.pkg.dev/uas-orchestration-engine/orchestration-images/uas-worker:latest",
+              "entrypoint": "/bin/bash",
+              "commands": [
+                "/app/shell_scripts/worker/9_inf_gs_om.sh"
+              ]
+            },
+            "environment": {
+              "variables": {
+                "PLATFORM": "{{ platform }}",
+                "JOB_NAME": "inf_gs_om_{{ job_title }}",
+                "GCP_JOB_NAME": "{{ step }}-{{ om }}-{{ sensor_type }}-{{ date }}-{{timestamp}}",
+                "JOB_ID": "{{ step }}-{{ om }}-{{ sensor_type }}-{{ date }}-{{timestamp}}",
+                "OM": "{{ om }}",
+                "SENSOR_TYPE": "{{ sensor_type }}",
+                "DATE": "{{ date }}",
+                "JOB_TITLE": "{{ job_title }}",
+                "PYTHON_SCRIPT": "{{ python_script }}",
+                "INPUT_DIR": "{{ gs_input_dir }}",
+                "OUTPUT_PATH_GS": "{{ output_path_gs }}",
+                "MODEL_PATH": "{{ model_path }}",
+                "PLOTIMAGE_SOURCE": "{{ plotimage_source }}",
+                "PERF_LOG_DIR": "{{ logdir_perf }}",
+                "MEMORY": "{{ resources.memory | default(300) }}"
+              }
+            }
+          }
+        ],
+        "computeResource": {
+          "cpuMilli": {{ (resources.cpus | default(4)) * 1000 }},
+          "memoryMib": {{ (resources.memory | default(300) | int) * 1024 }}
+        }
+      },
+      "taskCount": 1
+    }
+  ],
+  "allocationPolicy": {
+    "instances": [
+      {
+        {% if resources.gpu | default(false) %}
+        "installGpuDrivers": true,
+        {% endif %}
+        "policy": {
+          "machineType": "{{ resources.machine_type | default('n1-standard-4') }}",
+          "provisioningModel": "STANDARD"
+          {% if resources.gpu | default(false) %},
+          "accelerators": [
+            {
+              "type": "nvidia-tesla-t4",
+              "count": 1
+            }
+          ]
+          {% endif %}
+        }
+      }
+    ]
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}
+

@@ -1,0 +1,1 @@
+gcloud builds submit --config=cloudbuild_gcp_uas_osu.yaml --project=osu-prd-lwaltz12-2c91 .

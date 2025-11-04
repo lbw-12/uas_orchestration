@@ -1,0 +1,21 @@
+# Dockerfile for odm-processor
+FROM opendronemap/odm:latest
+
+# Switch to root to install small dependencies
+USER root
+
+# Install rclone for data staging and bc for calculations
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    rclone \
+    bc \
+    gdal-bin \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up the working directory
+WORKDIR /app
+COPY ./shell_scripts/worker/1_om.sh /app/shell_scripts/worker/1_om.sh
+COPY ./execution/ /app/execution/
+
+# Make the script executable
+RUN chmod +x /app/shell_scripts/worker/1_om.sh

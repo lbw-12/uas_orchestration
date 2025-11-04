@@ -1,0 +1,59 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "container": {
+              "imageUri": "us-central1-docker.pkg.dev/uas-orchestration-engine/orchestration-images/uas-worker:latest",
+              "entrypoint": "/bin/bash",
+              "commands": [
+                "/app/shell_scripts/worker/3_plottile_om.sh"
+              ]
+            },
+            "environment": {
+              "variables": {
+                "PLATFORM": "{{ platform }}",
+                "JOB_NAME": "plottile_om_{{ job_title }}",
+                "GCP_JOB_NAME": "{{ step }}-{{ om }}-{{ sensor_type }}-{{ date }}-{{timestamp}}",
+                "OM": "{{ om }}",
+                "SENSOR_TYPE": "{{ sensor_type }}",
+                "DATE": "{{ date }}",
+                "JOB_TITLE": "{{ job_title }}",
+                "PYTHON_SCRIPT": "{{ python_script }}",
+                "CSV_FOLDER_PATH": "{{ csv_folder_path }}",
+                "OM_ALIGNED_FOLDER": "{{ om_aligned_folder }}",
+                "SHAPEFILE_PATH1": "{{ shapefile_path1 }}",
+                "SHAPEFILE_PATH2": "{{ shapefile_path2 }}",
+                "OUTPUT_PATH_PLOTTILES": "{{ output_path_plottiles }}",
+                "CROP1": "{{ crop1 }}",
+                "CROP2": "{{ crop2 }}",
+                "PLOTIMAGE_SOURCE": "{{ plotimage_source }}",
+                "PERF_LOG_DIR": "{{ logdir_perf }}",
+                "MEMORY": "{{ resources.memory | default(60) }}"
+              }
+            }
+          }
+        ],
+        "computeResource": {
+          "cpuMilli": {{ (resources.cpus | default(6)) * 1000 }},
+          "memoryMib": {{ (resources.memory | default(60) | int) * 1024 }}
+        }
+      },
+      "taskCount": 1
+    }
+  ],
+  "allocationPolicy": {
+    "instances": [
+      {
+        "policy": {
+          "machineType": "{{ resources.machine_type | default("not_set") }}",
+          "provisioningModel": "STANDARD"
+        }
+      }
+    ]
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}

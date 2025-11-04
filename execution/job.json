@@ -1,0 +1,110 @@
+{
+  "allocationPolicy": {
+    "instances": [
+      {
+        "policy": {
+          "machineType": "n2-standard-16"
+        }
+      }
+    ],
+    "labels": {
+      "batch-job-id": "om-wooster-replant-ms-20250430-14"
+    },
+    "location": {
+      "allowedLocations": [
+        "regions/us-central1",
+        "zones/us-central1-a",
+        "zones/us-central1-b",
+        "zones/us-central1-c",
+        "zones/us-central1-f"
+      ]
+    },
+    "serviceAccount": {
+      "email": "97832345406-compute@developer.gserviceaccount.com"
+    }
+  },
+  "createTime": "2025-09-04T12:21:24.437640583Z",
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  },
+  "name": "projects/uas-orchestration-engine/locations/us-central1/jobs/om-wooster-replant-ms-20250430-14",
+  "status": {
+    "runDuration": "57.028560272s",
+    "state": "FAILED",
+    "statusEvents": [
+      {
+        "description": "Job state is set from QUEUED to SCHEDULED for job projects/97832345406/locations/us-central1/jobs/om-wooster-replant-ms-20250430-14.",
+        "eventTime": "2025-09-04T12:21:30.824904283Z",
+        "type": "STATUS_CHANGED"
+      },
+      {
+        "description": "Job state is set from SCHEDULED to RUNNING for job projects/97832345406/locations/us-central1/jobs/om-wooster-replant-ms-20250430-14.",
+        "eventTime": "2025-09-04T12:23:46.561951326Z",
+        "type": "STATUS_CHANGED"
+      },
+      {
+        "description": "Job state is set from RUNNING to FAILED for job projects/97832345406/locations/us-central1/jobs/om-wooster-replant-ms-20250430-14.Job failed due to task failure. Specifically, task with index 0 failed due to the following task event: \"Task state is updated from RUNNING to FAILED on zones/us-central1-f/instances/3615524007066221215 with exit code 1.\"",
+        "eventTime": "2025-09-04T12:24:43.590511598Z",
+        "type": "STATUS_CHANGED"
+      }
+    ],
+    "taskGroups": {
+      "group0": {
+        "counts": {
+          "FAILED": "1"
+        },
+        "instances": [
+          {
+            "bootDisk": {
+              "image": "projects/batch-custom-image/global/images/batch-cos-stable-official-20250814-00-p00",
+              "sizeGb": "30",
+              "type": "pd-balanced"
+            },
+            "machineType": "n2-standard-16",
+            "provisioningModel": "STANDARD",
+            "taskPack": "1"
+          }
+        ]
+      }
+    }
+  },
+  "taskGroups": [
+    {
+      "name": "projects/97832345406/locations/us-central1/jobs/om-wooster-replant-ms-20250430-14/taskGroups/group0",
+      "parallelism": "1",
+      "taskCount": "1",
+      "taskSpec": {
+        "computeResource": {
+          "cpuMilli": "2000",
+          "memoryMib": "2000"
+        },
+        "runnables": [
+          {
+            "container": {
+              "commands": [
+                "/app/shell_scripts/worker/1_om.sh"
+              ],
+              "imageUri": "us.gcr.io/uas-orchestration-engine/orchestration-images/uas-worker:latest"
+            },
+            "environment": {
+              "variables": {
+                "CORE_SCRIPT_NAME": "/app/execution/single_job_ms.sh",
+                "INPUT_PATH": ":gcs:data-uas/2025_poc/flights/20250430-Wooster/20250430_Wooster_Replant_Altum233 Flight 01/01_Images/20250430_Wooster_Replant_Altum233 Flight 01/OUTPUT/",
+                "JOB_ID": "${BATCH_JOB_UID}",
+                "JOB_NAME": "om_wooster_replant_ms_20250430",
+                "MEMORY": "0",
+                "ODM_PATH": ":gcs:data-uas/containers/odm_latest.sif",
+                "OUTPUT_DIR": ":gcs:data-uas/2025_poc/orthomosaics/initial/",
+                "PERF_LOG_DIR": ":gcs:data-uas/2025_poc/processing/logs_perf",
+                "PLATFORM": "gcp",
+                "PROCESSING_DIR": "/data/processing/wooster_replant_ms_20250430_${BATCH_JOB_UID}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "uid": "om-wooster-replant-6ea81da7-baec-446f0",
+  "updateTime": "2025-09-04T12:24:43.590511598Z"
+}

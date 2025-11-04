@@ -1,0 +1,12 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '--tag=us-central1-docker.pkg.dev/osu-prd-lwaltz12-2c91/orchestration-images/uas-worker:latest',
+    '--file=Dockerfile',
+    '.'
+  ]
+
+# This section pushes the built image to Artifact Registry
+images:
+- 'us-central1-docker.pkg.dev/osu-prd-lwaltz12-2c91/orchestration-images/uas-worker:latest'

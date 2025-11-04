@@ -1,0 +1,54 @@
+{
+  "taskGroups": [
+    {
+      "taskSpec": {
+        "runnables": [
+          {
+            "container": {
+              "imageUri": "us-central1-docker.pkg.dev/uas-orchestration-engine/orchestration-images/uas-worker:latest",
+              "entrypoint": "/bin/bash",
+              "commands": [
+                "/app/shell_scripts/worker/15_maptile.sh"
+              ]
+            },
+            "environment": {
+              "variables": {
+                "PLATFORM": "{{ platform }}",
+                "JOB_NAME": "maptile_{{ job_title }}",
+                "GCP_JOB_NAME": "{{ step }}-{{ om }}-{{ sensor_type }}-{{ date }}-{{timestamp}}",
+                "JOB_ID": "{{ step }}-{{ om }}-{{ sensor_type }}-{{ date }}-{{timestamp}}",
+                "OM": "{{ om }}",
+                "SENSOR_TYPE": "{{ sensor_type }}",
+                "DATE": "{{ date }}",
+                "JOB_TITLE": "{{ job_title }}",
+                "OM_ALIGNED_FOLDER": "{{ om_aligned_folder }}",
+                "MAPTILES_DIR": "{{ maptiles_dir }}",
+                "PERF_LOG_DIR": "{{ logdir_perf }}",
+                "MEMORY": "{{ resources.memory | default(32) }}"
+              }
+            }
+          }
+        ],
+        "computeResource": {
+          "cpuMilli": {{ (resources.cpus | default(12)) * 1000 }},
+          "memoryMib": {{ (resources.memory | default(32) | int) * 1024 }}
+        }
+      },
+      "taskCount": 1
+    }
+  ],
+  "allocationPolicy": {
+    "instances": [
+      {
+        "policy": {
+          "machineType": "{{ resources.machine_type | default('n2-highcpu-16') }}",
+          "provisioningModel": "STANDARD"
+        }
+      }
+    ]
+  },
+  "logsPolicy": {
+    "destination": "CLOUD_LOGGING"
+  }
+}
+

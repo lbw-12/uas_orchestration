@@ -1,0 +1,12 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+    'build',
+    '--tag=us-central1-docker.pkg.dev/uas-orchestration-engine/orchestration-images/odm-worker:latest',
+    '--file=Dockerfile.odm',
+    '.'
+  ]
+
+# This section pushes the built image to Artifact Registry
+images:
+- 'us-central1-docker.pkg.dev/uas-orchestration-engine/orchestration-images/odm-worker:latest'

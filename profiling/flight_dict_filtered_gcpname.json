@@ -1,0 +1,115 @@
+{
+    "wooster_replant": {
+        "wooster_replant": {
+            "ms": {
+                "20250430": {
+                    "step1": {
+                        "status": "complete",
+                        "input_path": ":gcs:data-uas/2025_poc/flights/20250430-Wooster/20250430_Wooster_Replant_Altum233 Flight 01/01_Images/20250430_Wooster_Replant_Altum233 Flight 01/OUTPUT/"
+                    },
+                    "step2": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/initial/wooster_replant_ms_20250430.tif",
+                        "alignment_path": null,
+                        "status": "complete"
+                    },
+                    "step3": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_ms_20250430_aligned.tif",
+                        "status": "complete"
+                    }
+                },
+                "20250508": {
+                    "step1": {
+                        "status": "validated",
+                        "input_path": ":gcs:data-uas/2025_poc/flights/20250508-Wooster/20250508_Wooster_Replant_Altum233 Flight 01/01_Images/20250508_Wooster_Replant_Altum233 Flight 01/OUTPUT/",
+                        "gcp_job_name": "step1_wooster_replant_ms_20250508_20250909-093812"
+                    },
+                    "step2": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/initial/wooster_replant_ms_20250508.tif",
+                        "alignment_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_ms_20250430_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step2_wooster_replant_ms_20250508_20250909-093812"
+                    },
+                    "step3": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_ms_20250508_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step3_wooster_replant_ms_20250508_20250909-093812"
+                    }
+                },
+                "20250514": {
+                    "step1": {
+                        "status": "validated",
+                        "input_path": ":gcs:data-uas/2025_poc/flights/20250514-Wooster/20250514_Wooster_Replant_Altum233 Flight 01/01_Images/20250514_Wooster_Replant_Altum233 Flight 01/OUTPUT/",
+                        "gcp_job_name": "step1_wooster_replant_ms_20250514_20250909-093812"
+                    },
+                    "step2": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/initial/wooster_replant_ms_20250514.tif",
+                        "alignment_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_ms_20250508_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step2_wooster_replant_ms_20250514_20250909-093812"
+                    },
+                    "step3": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_ms_20250514_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step3_wooster_replant_ms_20250514_20250909-093812"
+                    }
+                }
+            },
+            "rgb": {
+                "20250430": {
+                    "step1": {
+                        "status": "validated",
+                        "input_path": ":gcs:data-uas/2025_poc/flights/20250430-Wooster/20250430_Wooster_Replant_Sony150 Flight 01/01_Images/20250430_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "gcp_job_name": "step1_wooster_replant_rgb_20250430_20250909-093812"
+                    },
+                    "step2": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/initial/wooster_replant_rgb_20250430.tif",
+                        "alignment_path": null,
+                        "status": "not_ready",
+                        "gcp_job_name": "step2_wooster_replant_rgb_20250430_20250909-093812"
+                    },
+                    "step3": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_rgb_20250430_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step3_wooster_replant_rgb_20250430_20250909-093812"
+                    }
+                },
+                "20250508": {
+                    "step1": {
+                        "status": "validated",
+                        "input_path": ":gcs:data-uas/2025_poc/flights/20250508-Wooster/20250508_Wooster_Replant_Sony150 Flight 01/01_Images/20250508_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "gcp_job_name": "step1_wooster_replant_rgb_20250508_20250909-093812"
+                    },
+                    "step2": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/initial/wooster_replant_rgb_20250508.tif",
+                        "alignment_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_rgb_20250430_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step2_wooster_replant_rgb_20250508_20250909-093812"
+                    },
+                    "step3": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_rgb_20250508_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step3_wooster_replant_rgb_20250508_20250909-093812"
+                    }
+                },
+                "20250514": {
+                    "step1": {
+                        "status": "validated",
+                        "input_path": ":gcs:data-uas/2025_poc/flights/20250514-Wooster/20250514_Wooster_Replant_Sony150 Flight 01/01_Images/20250514_Wooster_Replant_Sony150 Flight 01/OUTPUT/",
+                        "gcp_job_name": "step1_wooster_replant_rgb_20250514_20250909-093812"
+                    },
+                    "step2": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/initial/wooster_replant_rgb_20250514.tif",
+                        "alignment_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_rgb_20250508_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step2_wooster_replant_rgb_20250514_20250909-093812"
+                    },
+                    "step3": {
+                        "input_path": ":gcs:data-uas/2025_poc/orthomosaics/aligned/wooster_replant_rgb_20250514_aligned.tif",
+                        "status": "not_ready",
+                        "gcp_job_name": "step3_wooster_replant_rgb_20250514_20250909-093812"
+                    }
+                }
+            }
+        }
+    }
+}

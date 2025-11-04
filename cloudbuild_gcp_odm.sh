@@ -1,0 +1,1 @@
+gcloud builds submit --config=cloudbuild_gcp_odm.yaml .

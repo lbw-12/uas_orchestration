@@ -1,0 +1,1 @@
+gcloud builds submit --config=cloudbuild_gcp_uas.yaml --project=uas-orchestration-engine .
